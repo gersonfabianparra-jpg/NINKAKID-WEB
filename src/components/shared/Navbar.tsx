@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
-const NAV_LINKS = [
+const links = [
   { label: "Servicios", href: "#servicios" },
   { label: "Paquetes", href: "#paquetes" },
   { label: "Galería", href: "#galeria" },
@@ -15,36 +15,32 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
-    setMenuOpen(false);
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth" });
+  const scroll = (href: string) => {
+    setOpen(false);
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "py-3 bg-[rgba(4,2,15,0.85)] backdrop-blur-2xl border-b border-white/5"
-            : "py-5 bg-transparent"
+            ? "bg-[rgba(8,8,8,0.92)] backdrop-blur-xl border-b border-white/[0.06]"
+            : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="container flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden ring-1 ring-white/10 group-hover:ring-yellow-500/40 transition-all duration-300">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <div className="relative w-8 h-8 rounded-lg overflow-hidden ring-1 ring-white/10">
               <Image
                 src="https://ninjakid.cl/wp-content/uploads/2026/03/ChatGPT-Image-22-ene-2026-14_54_24.png"
                 alt="NinjaKid"
@@ -53,73 +49,74 @@ export default function Navbar() {
                 unoptimized
               />
             </div>
-            <span className="text-lg font-bold tracking-tight">
-              <span className="text-white">Ninja</span>
-              <span className="text-yellow-400">Kid</span>
+            <span className="font-bold text-base tracking-tight">
+              Ninja<span style={{ color: "var(--gold)" }}>Kid</span>
             </span>
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {links.map((l) => (
               <button
-                key={link.href}
-                onClick={() => handleNavClick(link.href)}
-                className="relative px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors duration-200 group rounded-lg"
+                key={l.href}
+                onClick={() => scroll(l.href)}
+                className="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
               >
-                <span className="relative z-10">{link.label}</span>
-                <span className="absolute inset-0 rounded-lg bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                {l.label}
               </button>
             ))}
-          </div>
+          </nav>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/agendar"
-              className="btn-primary text-sm py-2.5 px-5 font-semibold"
-            >
-              ¡Agenda tu fiesta! 🎉
+          <div className="flex items-center gap-3">
+            <Link href="/agendar" className="btn btn-primary hidden sm:inline-flex" style={{ fontSize: 13, padding: "10px 20px" }}>
+              Reservar fiesta
             </Link>
+            <button
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg transition-colors"
+              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border)", color: "rgba(255,255,255,0.7)" }}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <X size={16} /> : <Menu size={16} />}
+            </button>
           </div>
-
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:text-white transition"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
         </div>
-      </motion.nav>
+      </header>
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {menuOpen && (
+        {open && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-[62px] z-40 p-4 md:hidden"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-16 z-40 md:hidden"
+            style={{ padding: "0 16px 16px" }}
           >
-            <div className="glass-strong rounded-2xl p-4 space-y-1">
-              {NAV_LINKS.map((link) => (
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{ background: "#111", border: "1px solid var(--border)" }}
+            >
+              {links.map((l) => (
                 <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className="w-full text-left px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/5 transition-all text-sm font-medium"
+                  key={l.href}
+                  onClick={() => scroll(l.href)}
+                  className="w-full text-left px-5 py-4 text-sm font-medium transition-colors"
+                  style={{ color: "rgba(255,255,255,0.65)", borderBottom: "1px solid var(--border)" }}
                 >
-                  {link.label}
+                  {l.label}
                 </button>
               ))}
-              <div className="pt-2 pb-1">
+              <div style={{ padding: "12px" }}>
                 <Link
                   href="/agendar"
-                  className="btn-primary w-full text-center block text-sm"
-                  onClick={() => setMenuOpen(false)}
+                  className="btn btn-primary w-full justify-center"
+                  onClick={() => setOpen(false)}
                 >
-                  ¡Agenda tu fiesta! 🎉
+                  Reservar mi fiesta
                 </Link>
               </div>
             </div>

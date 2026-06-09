@@ -3,120 +3,110 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, Phone, Send, CheckCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-function InstagramIcon({ size = 18 }: { size?: number }) {
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+function InstagramIcon() {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
     </svg>
   );
 }
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 const schema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
+  name: z.string().min(2, "Nombre muy corto"),
   email: z.string().email("Email inválido"),
   phone: z.string().optional(),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
+  message: z.string().min(10, "Cuéntanos más sobre tu evento"),
 });
-
 type FormData = z.infer<typeof schema>;
 
 export default function Contact() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-60px" });
   const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = async (data: FormData) => {
-    setSending(true);
+    setLoading(true);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (res.ok) {
-        setSent(true);
-        reset();
-      }
-    } catch {
-      alert("Hubo un error. Inténtalo de nuevo.");
+      if (res.ok) { setSent(true); reset(); }
     } finally {
-      setSending(false);
+      setLoading(false);
     }
   };
 
   return (
-    <section id="contacto" className="py-24 relative overflow-hidden" ref={ref}>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-pink-500/5 blur-[100px] rounded-full pointer-events-none" />
+    <section id="contacto" ref={ref} style={{ paddingBlock: "100px", background: "var(--bg-2)" }}>
+      <div className="container">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: 48,
+          }}
+        >
+          <style>{`@media(min-width:768px){ .contact-grid{ grid-template-columns:1fr 1fr!important; gap:60px!important; } }`}</style>
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            className="contact-grid"
+            initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
-            <span className="section-tag">💬 Contacto</span>
-            <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
-              Hablemos de tu{" "}
-              <span className="gradient-text">próxima fiesta</span>
+            <span className="label">✦ Contacto</span>
+            <h2 className="heading-1" style={{ marginBottom: 16 }}>
+              Hablemos de<br />tu fiesta
             </h2>
-            <p className="text-white/55 text-lg mb-10 leading-relaxed">
-              ¿Tienes dudas sobre nuestros servicios? ¿Quieres un presupuesto personalizado?
-              Escríbenos y te respondemos en menos de 24 horas.
+            <p style={{ fontSize: 15, color: "var(--text-2)", marginBottom: 36, lineHeight: 1.7 }}>
+              ¿Tienes dudas? ¿Quieres un presupuesto? Escríbenos y te respondemos antes de 24 horas.
             </p>
 
-            <div className="space-y-4">
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
-                {
-                  icon: <Phone size={18} className="text-yellow-400" />,
-                  label: "WhatsApp",
-                  value: "+56 9 1234 5678",
-                  href: "https://wa.me/56912345678",
-                },
-                {
-                  icon: <Mail size={18} className="text-yellow-400" />,
-                  label: "Email",
-                  value: "soporte@ninjakid.cl",
-                  href: "mailto:soporte@ninjakid.cl",
-                },
-                {
-                  icon: <InstagramIcon size={18} />,
-                  label: "Instagram",
-                  value: "@ninjakidchile",
-                  href: "https://instagram.com/ninjakidchile",
-                },
+                { icon: <Phone size={16} />, label: "WhatsApp", value: "+56 9 1234 5678", href: "https://wa.me/56912345678" },
+                { icon: <Mail size={16} />, label: "Email", value: "soporte@ninjakid.cl", href: "mailto:soporte@ninjakid.cl" },
+                { icon: <InstagramIcon />, label: "Instagram", value: "@ninjakidchile", href: "https://instagram.com/ninjakidchile" },
               ].map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
                   target={item.href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 glass rounded-2xl p-4 hover:border-yellow-500/20 transition-all group"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    padding: "14px 16px",
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 14,
+                    textDecoration: "none",
+                    transition: "border-color 0.2s ease",
+                  }}
+                  onMouseEnter={e => ((e.currentTarget.style.borderColor = "rgba(245,197,24,0.25)"))}
+                  onMouseLeave={e => ((e.currentTarget.style.borderColor = "var(--border)"))}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center shrink-0">
-                    {item.icon}
-                  </div>
+                  <span style={{ color: "var(--gold)", opacity: 0.8 }}>{item.icon}</span>
                   <div>
-                    <p className="text-xs text-white/40 uppercase tracking-wider">{item.label}</p>
-                    <p className="text-sm font-medium text-white/80 group-hover:text-white transition-colors">
-                      {item.value}
-                    </p>
+                    <p style={{ fontSize: 11, color: "var(--text-3)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>{item.label}</p>
+                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", marginTop: 1 }}>{item.value}</p>
                   </div>
                 </a>
               ))}
@@ -125,100 +115,66 @@ export default function Contact() {
 
           {/* Right: Form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            className="contact-grid"
+            initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.15 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
+            style={{
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: 20,
+              padding: "28px",
+            }}
           >
-            <div className="glass rounded-3xl p-8">
-              {sent ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-8"
+            {sent ? (
+              <div style={{ textAlign: "center", padding: "32px 0" }}>
+                <CheckCircle size={40} style={{ color: "#22c55e", margin: "0 auto 16px" }} />
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>¡Mensaje enviado!</h3>
+                <p style={{ fontSize: 14, color: "var(--text-2)" }}>Roberto te responderá pronto.</p>
+                <button
+                  onClick={() => setSent(false)}
+                  className="btn btn-ghost"
+                  style={{ marginTop: 20 }}
                 >
-                  <CheckCircle size={48} className="text-green-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">¡Mensaje enviado!</h3>
-                  <p className="text-white/50 text-sm">
-                    Roberto te responderá pronto. ¡Gracias por contactarnos!
-                  </p>
-                  <button
-                    onClick={() => setSent(false)}
-                    className="btn-outline text-sm mt-6 px-6"
-                  >
-                    Enviar otro mensaje
-                  </button>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                  <h3 className="text-lg font-bold text-white mb-6">Envíanos un mensaje</h3>
+                  Enviar otro
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>Envíanos un mensaje</p>
 
-                  <div>
-                    <input
-                      {...register("name")}
-                      placeholder="Tu nombre"
-                      className="input-dark"
-                    />
-                    {errors.name && (
-                      <p className="text-xs text-red-400 mt-1">{errors.name.message}</p>
-                    )}
-                  </div>
+                <div>
+                  <input {...register("name")} placeholder="Tu nombre" className="field" />
+                  {errors.name && <p style={{ fontSize: 12, color: "#ef4444", marginTop: 4 }}>{errors.name.message}</p>}
+                </div>
+                <div>
+                  <input {...register("email")} type="email" placeholder="Email" className="field" />
+                  {errors.email && <p style={{ fontSize: 12, color: "#ef4444", marginTop: 4 }}>{errors.email.message}</p>}
+                </div>
+                <input {...register("phone")} type="tel" placeholder="Teléfono (opcional)" className="field" />
+                <div>
+                  <textarea
+                    {...register("message")}
+                    placeholder="Cuéntanos sobre tu evento..."
+                    rows={4}
+                    className="field"
+                    style={{ resize: "none" }}
+                  />
+                  {errors.message && <p style={{ fontSize: 12, color: "#ef4444", marginTop: 4 }}>{errors.message.message}</p>}
+                </div>
 
-                  <div>
-                    <input
-                      {...register("email")}
-                      type="email"
-                      placeholder="Tu email"
-                      className="input-dark"
-                    />
-                    {errors.email && (
-                      <p className="text-xs text-red-400 mt-1">{errors.email.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <input
-                      {...register("phone")}
-                      type="tel"
-                      placeholder="Teléfono (opcional)"
-                      className="input-dark"
-                    />
-                  </div>
-
-                  <div>
-                    <textarea
-                      {...register("message")}
-                      placeholder="Cuéntanos sobre tu evento..."
-                      rows={4}
-                      className="input-dark resize-none"
-                    />
-                    {errors.message && (
-                      <p className="text-xs text-red-400 mt-1">{errors.message.message}</p>
-                    )}
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={sending}
-                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {sending ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        <Send size={16} />
-                        Enviar mensaje
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
+                <button type="submit" disabled={loading} className="btn btn-primary" style={{ marginTop: 4 }}>
+                  {loading
+                    ? <><span style={{ width: 14, height: 14, border: "2px solid rgba(0,0,0,0.3)", borderTop: "2px solid #000", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Enviando...</>
+                    : <><Send size={15} /> Enviar mensaje</>
+                  }
+                </button>
+              </form>
+            )}
           </motion.div>
         </div>
       </div>
+      <style>{`@keyframes spin{ to{ transform:rotate(360deg); } }`}</style>
     </section>
   );
 }

@@ -2,80 +2,97 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import { FAQS } from "@/lib/data";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function FAQ() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-24 relative overflow-hidden" ref={ref}>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-purple-500/5 blur-[100px] rounded-full pointer-events-none" />
+    <section id="faq" ref={ref} style={{ paddingBlock: "100px" }}>
+      <div className="container" style={{ maxWidth: 760 }}>
 
-      <div className="max-w-3xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.6, ease: EASE }}
+          style={{ marginBottom: 48, textAlign: "center" }}
         >
-          <span className="section-tag">❓ FAQ</span>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Preguntas{" "}
-            <span className="gradient-text">frecuentes</span>
-          </h2>
-          <p className="text-white/50">Todo lo que necesitas saber antes de reservar.</p>
+          <span className="label">✦ FAQ</span>
+          <h2 className="heading-1">Preguntas frecuentes</h2>
         </motion.div>
 
-        <div className="space-y-3">
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {FAQS.map((faq, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className={`glass rounded-2xl overflow-hidden border transition-all duration-300 ${
-                openIndex === i ? "border-yellow-500/20" : "border-white/5"
-              }`}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
+              style={{
+                background: "var(--bg-card)",
+                border: `1px solid ${open === i ? "rgba(245,197,24,0.2)" : "var(--border)"}`,
+                borderRadius: 14,
+                overflow: "hidden",
+                transition: "border-color 0.25s ease",
+              }}
             >
               <button
-                className="w-full flex items-center justify-between gap-4 p-6 text-left group"
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                onClick={() => setOpen(open === i ? null : i)}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 16,
+                  padding: "20px 22px",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  textAlign: "left",
+                }}
               >
                 <span
-                  className={`font-semibold text-sm sm:text-base transition-colors ${
-                    openIndex === i ? "text-yellow-400" : "text-white/80 group-hover:text-white"
-                  }`}
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: open === i ? "#fff" : "rgba(255,255,255,0.75)",
+                    lineHeight: 1.4,
+                    transition: "color 0.2s ease",
+                  }}
                 >
                   {faq.q}
                 </span>
                 <motion.div
-                  animate={{ rotate: openIndex === i ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="shrink-0"
+                  animate={{ rotate: open === i ? 45 : 0 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ flexShrink: 0, color: open === i ? "var(--gold)" : "rgba(255,255,255,0.3)" }}
                 >
-                  <ChevronDown
-                    size={18}
-                    className={`transition-colors ${
-                      openIndex === i ? "text-yellow-400" : "text-white/30"
-                    }`}
-                  />
+                  <Plus size={18} />
                 </motion.div>
               </button>
 
               <AnimatePresence initial={false}>
-                {openIndex === i && (
+                {open === i && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
+                    initial={{ height: 0 }}
+                    animate={{ height: "auto" }}
+                    exit={{ height: 0 }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    style={{ overflow: "hidden" }}
                   >
-                    <p className="text-sm text-white/55 leading-relaxed pb-6 px-6">
+                    <p
+                      style={{
+                        padding: "0 22px 20px",
+                        fontSize: 14,
+                        color: "var(--text-2)",
+                        lineHeight: 1.7,
+                      }}
+                    >
                       {faq.a}
                     </p>
                   </motion.div>

@@ -3,106 +3,116 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { Check, ArrowRight } from "lucide-react";
-import { SERVICES } from "@/lib/data";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { SERVICES } from "@/lib/data";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Services() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="servicios" className="py-24 relative overflow-hidden" ref={ref}>
-      {/* Background decorations */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-yellow-500/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/5 blur-[100px] rounded-full pointer-events-none" />
+    <section id="servicios" ref={ref} style={{ paddingBlock: "100px" }}>
+      <div className="container">
 
-      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6, ease: EASE }}
+          style={{ marginBottom: 56 }}
         >
-          <span className="section-tag">✨ Nuestros Servicios</span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 leading-tight">
+          <span className="label">✦ Servicios</span>
+          <h2 className="heading-1" style={{ maxWidth: 480 }}>
             Todo lo que necesitas<br />
-            <span className="gradient-text">para una fiesta épica</span>
+            en un solo lugar
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mx-auto">
-            Combinamos diversión, seguridad y calidad premium para crear momentos que los niños recordarán toda la vida.
-          </p>
         </motion.div>
 
-        {/* Services grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {SERVICES.map((service, i) => (
+        {/* Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: 16,
+          }}
+        >
+          {SERVICES.map((svc, i) => (
             <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 40 }}
+              key={svc.id}
+              initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative glass rounded-3xl overflow-hidden hover:border-white/15 transition-all duration-500 cursor-pointer"
-              style={{ transformStyle: "preserve-3d" }}
-              whileHover={{
-                y: -8,
-                boxShadow:
-                  service.glow === "yellow"
-                    ? "0 20px 60px rgba(255,215,0,0.15)"
-                    : service.glow === "pink"
-                    ? "0 20px 60px rgba(255,45,120,0.15)"
-                    : "0 20px 60px rgba(0,245,255,0.15)",
-              }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
+              className="card"
+              style={{ overflow: "hidden" }}
             >
               {/* Image */}
-              <div className="relative h-56 overflow-hidden">
+              <div style={{ position: "relative", height: 220, overflow: "hidden" }}>
                 <Image
-                  src={service.image}
-                  alt={service.name}
+                  src={svc.image}
+                  alt={svc.name}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover"
+                  style={{ transition: "transform 0.6s ease" }}
                   unoptimized
+                  onMouseEnter={e => ((e.target as HTMLImageElement).style.transform = "scale(1.05)")}
+                  onMouseLeave={e => ((e.target as HTMLImageElement).style.transform = "scale(1)")}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#04020f] via-[#04020f]/40 to-transparent" />
-
-                {/* Emoji badge */}
-                <div className="absolute top-4 left-4 text-4xl">{service.emoji}</div>
-
-                {/* Gradient overlay on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.2) 60%, transparent 100%)",
+                  }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 14,
+                    left: 16,
+                    fontSize: 28,
+                  }}
+                >
+                  {svc.emoji}
+                </span>
               </div>
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">{service.name}</h3>
-                <p className="text-white/55 text-sm leading-relaxed mb-5">{service.shortDesc}</p>
+              {/* Body */}
+              <div style={{ padding: "24px" }}>
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>{svc.name}</h3>
+                <p style={{ fontSize: 14, color: "var(--text-2)", lineHeight: 1.6, marginBottom: 20 }}>
+                  {svc.shortDesc}
+                </p>
 
-                {/* Features */}
-                <ul className="space-y-2 mb-6">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-white/60">
-                      <Check size={14} className="text-yellow-400 shrink-0" />
-                      {feature}
-                    </li>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 }}>
+                  {svc.features.map((f) => (
+                    <div key={f} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-3)" }}>
+                      <span style={{ color: "var(--gold)", fontSize: 10 }}>●</span>
+                      {f}
+                    </div>
                   ))}
-                </ul>
+                </div>
 
-                {/* CTA link */}
                 <Link
                   href="/agendar"
-                  className="flex items-center gap-2 text-sm font-semibold text-yellow-400 hover:text-yellow-300 transition-colors group/link"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "var(--gold)",
+                    textDecoration: "none",
+                    transition: "gap 0.2s ease",
+                  }}
+                  onMouseEnter={e => ((e.currentTarget.style.gap = "10px"))}
+                  onMouseLeave={e => ((e.currentTarget.style.gap = "6px"))}
                 >
-                  Incluir en mi paquete
-                  <ArrowRight
-                    size={15}
-                    className="group-hover/link:translate-x-1 transition-transform"
-                  />
+                  Incluir en mi reserva <ArrowRight size={14} />
                 </Link>
               </div>
-
-              {/* Bottom gradient line */}
-              <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
             </motion.div>
           ))}
         </div>
