@@ -8,9 +8,9 @@ import { Menu, X } from "lucide-react";
 
 const links = [
   { label: "Servicios", href: "#servicios" },
-  { label: "Paquetes", href: "#paquetes" },
-  { label: "Galería", href: "#galeria" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Proceso",   href: "#proceso"   },
+  { label: "Paquetes",  href: "#paquetes"  },
+  { label: "Contacto",  href: "#contacto"  },
 ];
 
 export default function Navbar() {

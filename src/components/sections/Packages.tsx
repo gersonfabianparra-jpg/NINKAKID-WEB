@@ -44,8 +44,26 @@ export default function Packages() {
             <motion.div
               key={pkg.id}
               initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
+              animate={inView
+                ? pkg.popular
+                  ? {
+                      opacity: 1, y: 0,
+                      boxShadow: [
+                        "0 0 0 1px rgba(245,197,24,0.2), 0 0 0 0 rgba(245,197,24,0)",
+                        "0 0 0 1px rgba(245,197,24,0.45), 0 8px 48px -8px rgba(245,197,24,0.18)",
+                        "0 0 0 1px rgba(245,197,24,0.2), 0 0 0 0 rgba(245,197,24,0)",
+                      ],
+                    }
+                  : { opacity: 1, y: 0 }
+                : {}}
+              transition={pkg.popular
+                ? {
+                    opacity: { duration: 0.6, delay: i * 0.1, ease: EASE },
+                    y: { duration: 0.6, delay: i * 0.1, ease: EASE },
+                    boxShadow: { duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 1 },
+                  }
+                : { duration: 0.6, delay: i * 0.1, ease: EASE }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
               style={{
                 background: pkg.popular ? "rgba(245,197,24,0.05)" : "var(--bg-card)",
                 border: `1px solid ${pkg.popular ? "rgba(245,197,24,0.3)" : "var(--border)"}`,

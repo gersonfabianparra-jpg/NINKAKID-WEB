@@ -1,122 +1,239 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, Star, Check } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: EASE },
-});
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.08 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
+  show: {
+    opacity: 1, y: 0, filter: "blur(0px)",
+    transition: { duration: 0.9, ease: EASE },
+  },
+};
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const cardY   = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const gridBgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
   return (
     <section
-      className="relative flex items-center justify-center overflow-hidden"
-      style={{ minHeight: "100svh", paddingTop: 80 }}
+      ref={ref}
+      style={{ minHeight: "100svh", paddingTop: 72, position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}
     >
-      {/* Background gradient */}
-      <div
+      {/* ── Orbs ── */}
+      <motion.div
         aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(245,197,24,0.08) 0%, transparent 70%)",
-        }}
+        animate={{ x: [0, 50, 0], y: [0, -40, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", top: "-15%", left: "-8%", width: 800, height: 800, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }}
+      />
+      <motion.div
+        aria-hidden
+        animate={{ x: [0, -50, 0], y: [0, 60, 0] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 6 }}
+        style={{ position: "absolute", bottom: "-5%", right: "-8%", width: 650, height: 650, borderRadius: "50%", background: "radial-gradient(circle, rgba(120,60,255,0.045) 0%, transparent 65%)", filter: "blur(70px)", pointerEvents: "none" }}
       />
 
-      {/* Subtle grid */}
-      <div
+      {/* ── Dot grid ── */}
+      <motion.div
         aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-          maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent)",
-        }}
+        style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.038) 1px, transparent 1px)", backgroundSize: "28px 28px", maskImage: "radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 100%)", y: gridBgY, pointerEvents: "none" }}
       />
 
-      <div className="container relative z-10">
-        <div className="max-w-4xl mx-auto text-center" style={{ padding: "60px 0 80px" }}>
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+        <div
+          className="hero-split"
+          style={{ display: "grid", gridTemplateColumns: "1fr", gap: 48, alignItems: "center", paddingBlock: "80px 60px" }}
+        >
+          <style>{`
+            @media(min-width:900px) { .hero-split{ grid-template-columns:1.1fr 0.9fr!important; gap:72px!important; } }
+            @media(max-width:899px) { .hero-card-float{ display:none!important; } }
+          `}</style>
 
-          {/* Status badge */}
-          <motion.div {...fade(0)} style={{ marginBottom: 32 }}>
-            <span className="badge">
-              <span className="dot-pulse" />
-              <MapPin size={12} style={{ opacity: 0.6 }} />
-              Región Metropolitana, Santiago
-            </span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1 {...fade(0.1)} className="display" style={{ marginBottom: 24 }}>
-            La fiesta que<br />
-            <span className="gradient-gold">tu hijo merece</span>
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            {...fade(0.2)}
-            style={{
-              fontSize: "clamp(16px, 2.5vw, 20px)",
-              color: "var(--text-2)",
-              maxWidth: 520,
-              margin: "0 auto 40px",
-              lineHeight: 1.6,
-            }}
-          >
-            Inflables temáticos, juegos arcade y amplificación profesional.
-            Llegamos a tu domicilio y nos encargamos de todo.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            {...fade(0.3)}
-            className="flex flex-col sm:flex-row items-center justify-center"
-            style={{ gap: 12 }}
-          >
-            <Link href="/agendar" className="btn btn-primary" style={{ fontSize: 15, padding: "15px 32px" }}>
-              Reservar mi fiesta
-              <ArrowRight size={16} />
-            </Link>
-            <button
-              className="btn btn-ghost"
-              style={{ fontSize: 15, padding: "15px 32px" }}
-              onClick={() => document.querySelector("#servicios")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Ver qué ofrecemos
-            </button>
-          </motion.div>
-
-          {/* Trust row */}
-          <motion.div
-            {...fade(0.45)}
-            className="flex flex-wrap items-center justify-center"
-            style={{ gap: "8px 24px", marginTop: 48 }}
-          >
-            {[
-              "🏆 +500 fiestas realizadas",
-              "✅ Instalación incluida",
-              "📍 Toda la RM",
-            ].map((t) => (
-              <span key={t} style={{ fontSize: 13, color: "var(--text-3)", fontWeight: 500 }}>
-                {t}
+          {/* ── Left: Text ── */}
+          <motion.div variants={container} initial="hidden" animate="show">
+            <motion.div variants={item} style={{ marginBottom: 28 }}>
+              <span className="badge">
+                <span className="dot-pulse" />
+                <MapPin size={11} style={{ opacity: 0.5 }} />
+                Santiago · Región Metropolitana
               </span>
-            ))}
+            </motion.div>
+
+            <motion.h1
+              variants={item}
+              className="display"
+              style={{ marginBottom: 22, lineHeight: 0.93, letterSpacing: "-0.035em" }}
+            >
+              La fiesta<br />
+              que tu hijo<br />
+              <span className="gradient-gold">merece.</span>
+            </motion.h1>
+
+            <motion.p
+              variants={item}
+              style={{ fontSize: "clamp(15px, 1.7vw, 18px)", color: "var(--text-2)", maxWidth: 450, lineHeight: 1.75, marginBottom: 38 }}
+            >
+              Inflables temáticos, arcade y sonido profesional. Llegamos a tu domicilio, instalamos todo y recogemos cuando termina.
+            </motion.p>
+
+            <motion.div variants={item} style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 48 }}>
+              <Link href="/agendar" className="btn btn-primary" style={{ fontSize: 15, padding: "15px 32px" }}>
+                Reservar mi fiesta <ArrowRight size={16} />
+              </Link>
+              <a
+                href="https://wa.me/56912345678"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost"
+                style={{ fontSize: 15, padding: "15px 32px" }}
+              >
+                WhatsApp
+              </a>
+            </motion.div>
+
+            <motion.div
+              variants={item}
+              style={{ display: "flex", flexWrap: "wrap", gap: 28, paddingTop: 24, borderTop: "1px solid var(--border)" }}
+            >
+              {[
+                { n: "500+", label: "Fiestas realizadas" },
+                { n: "5.0 ★", label: "Valoración promedio" },
+                { n: "30+",  label: "Comunas cubiertas"  },
+              ].map((s) => (
+                <div key={s.n}>
+                  <p style={{ fontSize: "clamp(20px, 2.2vw, 26px)", fontWeight: 900, color: "var(--gold)", letterSpacing: "-0.025em", lineHeight: 1 }}>{s.n}</p>
+                  <p style={{ fontSize: 12, color: "var(--text-3)", marginTop: 4 }}>{s.label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* ── Right: Animated card ── */}
+          <motion.div
+            style={{ position: "relative", y: cardY }}
+            initial={{ opacity: 0, x: 48 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, delay: 0.35, ease: EASE }}
+          >
+            {/* Gradient border wrapper */}
+            <div className="gradient-border">
+              <div style={{ background: "var(--bg-card)", borderRadius: 23, padding: 28, position: "relative", overflow: "hidden" }}>
+                {/* Inner glow top-right */}
+                <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+                {/* Card header */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 12, background: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
+                      🎪
+                    </div>
+                    <div>
+                      <p style={{ fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>NinjaKid</p>
+                      <p style={{ fontSize: 11, color: "var(--text-3)", marginTop: 1 }}>Plataforma de reservas</p>
+                    </div>
+                  </div>
+                  <motion.span
+                    animate={{ opacity: [0.65, 1, 0.65] }}
+                    transition={{ duration: 2.8, repeat: Infinity }}
+                    style={{ fontSize: 11, fontWeight: 700, background: "rgba(34,197,94,0.1)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 100, padding: "5px 12px" }}
+                  >
+                    ● Activo
+                  </motion.span>
+                </div>
+
+                {/* Event block */}
+                <div style={{ background: "rgba(255,255,255,0.025)", border: "1px solid var(--border)", borderRadius: 14, padding: "16px 18px", marginBottom: 18 }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>Próximo evento</p>
+                  <p style={{ fontWeight: 800, fontSize: 17, marginBottom: 12 }}>Cumpleaños de Sofía 🎂</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
+                    {[["📅", "Sáb 15 Jun"], ["🕒", "15:00 hrs"], ["📍", "Las Condes"]].map(([icon, text]) => (
+                      <div key={text} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "var(--text-2)" }}>
+                        <span>{icon}</span><span>{text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Services checklist */}
+                <p style={{ fontSize: 11, fontWeight: 600, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 11 }}>Paquete incluye</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 22 }}>
+                  {[
+                    ["🏰", "Inflable temático XL"],
+                    ["🕹️", "Máquinas arcade × 2"],
+                    ["🎵", "Sonido profesional"],
+                    ["🚚", "Instalación y retiro"],
+                  ].map(([emoji, text], i) => (
+                    <motion.div
+                      key={text}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 + i * 0.1, duration: 0.5, ease: EASE }}
+                      style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 13 }}
+                    >
+                      <Check size={12} style={{ color: "var(--gold)", flexShrink: 0 }} />
+                      <span style={{ color: "rgba(255,255,255,0.72)" }}>
+                        <span style={{ marginRight: 6 }}>{emoji}</span>{text}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Price row */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid var(--border)", paddingTop: 17 }}>
+                  <div>
+                    <p style={{ fontSize: 11, color: "var(--text-3)", marginBottom: 2 }}>Total reserva</p>
+                    <p style={{ fontSize: 26, fontWeight: 900, color: "var(--gold)", letterSpacing: "-0.025em", lineHeight: 1 }}>$75.990</p>
+                  </div>
+                  <div style={{ display: "flex", gap: 2 }}>
+                    {[1,2,3,4,5].map((i) => (
+                      <Star key={i} size={13} fill="var(--gold)" color="var(--gold)" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating chip — top-right */}
+            <motion.div
+              className="hero-card-float"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              style={{ position: "absolute", top: -18, right: -20, background: "#0d0d1a", border: "1px solid rgba(245,197,24,0.22)", borderRadius: 100, padding: "9px 16px", display: "flex", alignItems: "center", gap: 7, boxShadow: "0 10px 36px rgba(0,0,0,0.55)", whiteSpace: "nowrap" }}
+            >
+              <span style={{ fontSize: 16 }}>🎉</span>
+              <span style={{ fontSize: 12, fontWeight: 600 }}>+32 fiestas esta semana</span>
+            </motion.div>
+
+            {/* Floating chip — bottom-left */}
+            <motion.div
+              className="hero-card-float"
+              animate={{ y: [0, 9, 0] }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+              style={{ position: "absolute", bottom: -18, left: -20, background: "#0d0d1a", border: "1px solid rgba(34,197,94,0.22)", borderRadius: 100, padding: "9px 16px", display: "flex", alignItems: "center", gap: 7, boxShadow: "0 10px 36px rgba(0,0,0,0.55)", whiteSpace: "nowrap" }}
+            >
+              <span className="dot-pulse" style={{ flexShrink: 0 }} />
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#22c55e" }}>Disponible hoy</span>
+            </motion.div>
           </motion.div>
         </div>
       </div>
 
       {/* Bottom fade */}
-      <div
-        aria-hidden
-        className="absolute bottom-0 inset-x-0 pointer-events-none"
-        style={{ height: 120, background: "linear-gradient(to top, var(--bg), transparent)" }}
-      />
+      <div aria-hidden style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 140, background: "linear-gradient(to top, var(--bg), transparent)", pointerEvents: "none" }} />
     </section>
   );
 }
