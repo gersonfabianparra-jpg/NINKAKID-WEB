@@ -25,7 +25,24 @@ export default function Navbar() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+
+    // Track active section via IntersectionObserver
+    const observers: IntersectionObserver[] = [];
+    links.forEach(({ href }) => {
+      const el = document.querySelector(href);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActive(href); },
+        { threshold: 0.3, rootMargin: "-15% 0px -60% 0px" }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      observers.forEach((o) => o.disconnect());
+    };
   }, []);
 
   const scroll = (href: string) => {

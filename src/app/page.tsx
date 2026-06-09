@@ -1,5 +1,7 @@
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import FloatingActions from "@/components/shared/FloatingActions";
+import SectionDots from "@/components/shared/SectionDots";
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/sections/Marquee";
 import Stats from "@/components/sections/Stats";
@@ -32,6 +34,8 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <FloatingActions />
+      <SectionDots />
     </>
   );
 }

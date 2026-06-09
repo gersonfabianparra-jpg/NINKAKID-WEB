@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, MapPin, Star, Check } from "lucide-react";
+import { ArrowRight, MapPin, Star, Check, ChevronDown } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -304,6 +304,26 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Scroll hint */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 0.8 }}
+        style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, zIndex: 1 }}
+      >
+        <motion.span
+          style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}
+        >
+          scroll
+        </motion.span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown size={18} style={{ color: "rgba(255,255,255,0.25)" }} />
+        </motion.div>
+      </motion.div>
 
       <div aria-hidden style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 140, background: "linear-gradient(to top, var(--bg), transparent)", pointerEvents: "none" }} />
     </section>
