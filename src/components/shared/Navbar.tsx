@@ -56,7 +56,7 @@ export default function Navbar() {
               />
             </div>
             <span className="font-bold text-base tracking-tight">
-              Ninja<span style={{ color: "var(--gold)" }}>Kid</span>
+              Ninja<span style={{ color: "var(--blue)" }}>Kid</span>
             </span>
           </Link>
 

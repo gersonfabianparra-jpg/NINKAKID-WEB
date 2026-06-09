@@ -9,10 +9,10 @@ import { SERVICES } from "@/lib/data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const GLOWS: Record<string, string> = {
-  inflables: "rgba(245,197,24,0.12)",
-  arcade:    "rgba(232,72,153,0.10)",
-  sonido:    "rgba(34,211,238,0.10)",
+const PALETTE: Record<string, { accent: string; dim: string; glow: string }> = {
+  inflables: { accent: "#FFCA00", dim: "rgba(255,202,0,0.10)",  glow: "rgba(255,202,0,0.16)"  },
+  arcade:    { accent: "#3B8FFF", dim: "rgba(59,143,255,0.10)", glow: "rgba(59,143,255,0.16)" },
+  sonido:    { accent: "#FF5050", dim: "rgba(255,80,80,0.10)",  glow: "rgba(255,80,80,0.16)"  },
 };
 
 export default function Services() {
@@ -63,12 +63,13 @@ function ServiceCard({
       transition={{ duration: 0.75, delay: i * 0.13, ease: [0.22, 1, 0.36, 1] }}
       style={{ borderRadius: 20, overflow: "hidden", border: "1px solid var(--border)", background: "var(--bg-card)", transition: "border-color 0.3s, transform 0.12s linear, box-shadow 0.3s" }}
       onMouseMove={(e) => {
+        const c = PALETTE[svc.id] ?? PALETTE.inflables;
         const r = e.currentTarget.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width  - 0.5;
         const y = (e.clientY - r.top)  / r.height - 0.5;
         e.currentTarget.style.transform = `perspective(900px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg) translateY(-3px)`;
-        e.currentTarget.style.borderColor = "rgba(245,197,24,0.22)";
-        e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.35)";
+        e.currentTarget.style.borderColor = c.dim.replace("0.10", "0.35");
+        e.currentTarget.style.boxShadow = `0 20px 60px ${c.glow}`;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
@@ -88,7 +89,7 @@ function ServiceCard({
           {/* Glow overlay */}
           <div
             aria-hidden
-            style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 80% 100% at 10% 50%, ${GLOWS[svc.id] ?? "transparent"}, transparent 65%)`, zIndex: 1, pointerEvents: "none" }}
+            style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 80% 100% at 10% 50%, ${(PALETTE[svc.id] ?? PALETTE.inflables).dim}, transparent 65%)`, zIndex: 1, pointerEvents: "none" }}
           />
           <Image
             src={svc.image}
@@ -125,7 +126,7 @@ function ServiceCard({
 
           <Link
             href="/agendar"
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700, color: "var(--gold)", textDecoration: "none", width: "fit-content" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700, color: (PALETTE[svc.id] ?? PALETTE.inflables).accent, textDecoration: "none", width: "fit-content" }}
             onMouseEnter={e => (e.currentTarget.style.gap = "10px")}
             onMouseLeave={e => (e.currentTarget.style.gap = "6px")}
           >

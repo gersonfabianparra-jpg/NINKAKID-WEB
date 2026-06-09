@@ -7,10 +7,10 @@ import Link from "next/link";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const STEPS = [
-  { n: "01", icon: "🎯", title: "Elige tu paquete", desc: "Selecciona el paquete que mejor se adapta a tu evento y al número de invitados que esperan." },
-  { n: "02", icon: "📅", title: "Reserva la fecha", desc: "Elige el día y la hora. Confirmamos disponibilidad y recibes tu reserva en minutos." },
-  { n: "03", icon: "🚚", title: "Nosotros llegamos", desc: "El equipo de NinjaKid llega 1 hora antes para instalarlo todo. Tú no mueves ni un dedo." },
-  { n: "04", icon: "🎉", title: "Disfruta la fiesta", desc: "Solo vive el momento. Al terminar recogemos todo y dejamos el espacio impecable." },
+  { n: "01", icon: "🎯", title: "Elige tu paquete", desc: "Selecciona el paquete que mejor se adapta a tu evento y al número de invitados que esperan.", color: "#FFCA00" },
+  { n: "02", icon: "📅", title: "Reserva la fecha", desc: "Elige el día y la hora. Confirmamos disponibilidad y recibes tu reserva en minutos.", color: "#3B8FFF" },
+  { n: "03", icon: "🚚", title: "Nosotros llegamos", desc: "El equipo de NinjaKid llega 1 hora antes para instalarlo todo. Tú no mueves ni un dedo.", color: "#FF5050" },
+  { n: "04", icon: "🎉", title: "Disfruta la fiesta", desc: "Solo vive el momento. Al terminar recogemos todo y dejamos el espacio impecable.", color: "#22c55e" },
 ];
 
 export default function HowItWorks() {
@@ -49,7 +49,7 @@ export default function HowItWorks() {
               style={{
                 position: "relative",
                 background: "var(--bg-card)",
-                border: "1px solid var(--border)",
+                border: `1px solid ${step.color}22`,
                 borderRadius: 20,
                 padding: "32px 26px",
                 overflow: "hidden",
@@ -66,14 +66,14 @@ export default function HowItWorks() {
               <div style={{ position: "relative", zIndex: 1 }}>
                 <div style={{
                   width: 50, height: 50, borderRadius: 14,
-                  background: "rgba(245,197,24,0.07)",
-                  border: "1px solid rgba(245,197,24,0.15)",
+                  background: `${step.color}14`,
+                  border: `1px solid ${step.color}33`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: 24, marginBottom: 24,
                 }}>
                   {step.icon}
                 </div>
-                <p style={{ fontSize: 11, fontWeight: 700, color: "var(--gold)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+                <p style={{ fontSize: 11, fontWeight: 700, color: step.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
                   Paso {step.n}
                 </p>
                 <h3 style={{ fontSize: 17, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 10 }}>{step.title}</h3>

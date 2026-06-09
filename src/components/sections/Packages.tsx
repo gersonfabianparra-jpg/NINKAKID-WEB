@@ -9,6 +9,27 @@ import { formatCLP } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+const PKG_PALETTE: Record<string, { accent: string; glow: string; bg: string; border: string }> = {
+  starter: {
+    accent: "#3B8FFF",
+    glow:   "rgba(59,143,255,0.18)",
+    bg:     "rgba(59,143,255,0.05)",
+    border: "rgba(59,143,255,0.28)",
+  },
+  ninja: {
+    accent: "#FFCA00",
+    glow:   "rgba(255,202,0,0.18)",
+    bg:     "rgba(255,202,0,0.05)",
+    border: "rgba(255,202,0,0.30)",
+  },
+  ultra: {
+    accent: "#FF5050",
+    glow:   "rgba(255,80,80,0.18)",
+    bg:     "rgba(255,80,80,0.05)",
+    border: "rgba(255,80,80,0.28)",
+  },
+};
+
 export default function Packages() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -45,16 +66,16 @@ export default function Packages() {
               key={pkg.id}
               initial={{ opacity: 0, y: 24 }}
               animate={inView
-                ? pkg.popular
-                  ? {
-                      opacity: 1, y: 0,
+                ? {
+                    opacity: 1, y: 0,
+                    ...(pkg.popular && {
                       boxShadow: [
-                        "0 0 0 1px rgba(245,197,24,0.2), 0 0 0 0 rgba(245,197,24,0)",
-                        "0 0 0 1px rgba(245,197,24,0.45), 0 8px 48px -8px rgba(245,197,24,0.18)",
-                        "0 0 0 1px rgba(245,197,24,0.2), 0 0 0 0 rgba(245,197,24,0)",
+                        `0 0 0 1px ${PKG_PALETTE[pkg.id]?.border}, 0 0 0 0 transparent`,
+                        `0 0 0 1px ${PKG_PALETTE[pkg.id]?.border}, 0 8px 48px -8px ${PKG_PALETTE[pkg.id]?.glow}`,
+                        `0 0 0 1px ${PKG_PALETTE[pkg.id]?.border}, 0 0 0 0 transparent`,
                       ],
-                    }
-                  : { opacity: 1, y: 0 }
+                    }),
+                  }
                 : {}}
               transition={pkg.popular
                 ? {
@@ -64,21 +85,20 @@ export default function Packages() {
                   }
                 : { duration: 0.6, delay: i * 0.1, ease: EASE }}
               style={{
-                background: pkg.popular ? "rgba(245,197,24,0.05)" : "var(--bg-card)",
-                border: `1px solid ${pkg.popular ? "rgba(245,197,24,0.3)" : "var(--border)"}`,
+                background: PKG_PALETTE[pkg.id]?.bg ?? "var(--bg-card)",
+                border: `1px solid ${PKG_PALETTE[pkg.id]?.border ?? "var(--border)"}`,
                 borderRadius: 20,
                 padding: 28,
                 position: "relative",
                 transition: "transform 0.12s linear, box-shadow 0.3s",
               }}
               onMouseMove={(e) => {
+                const c = PKG_PALETTE[pkg.id];
                 const r = e.currentTarget.getBoundingClientRect();
                 const x = (e.clientX - r.left) / r.width  - 0.5;
                 const y = (e.clientY - r.top)  / r.height - 0.5;
                 e.currentTarget.style.transform = `perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-4px) scale(1.01)`;
-                e.currentTarget.style.boxShadow = pkg.popular
-                  ? "0 24px 60px rgba(245,197,24,0.15)"
-                  : "0 20px 50px rgba(0,0,0,0.35)";
+                e.currentTarget.style.boxShadow = `0 24px 60px ${c?.glow ?? "rgba(0,0,0,0.35)"}`;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)";
@@ -94,7 +114,7 @@ export default function Packages() {
                     top: -1,
                     left: "50%",
                     transform: "translateX(-50%)",
-                    background: "var(--gold)",
+                    background: PKG_PALETTE[pkg.id]?.accent ?? "var(--yellow)",
                     color: "#000",
                     fontSize: 10,
                     fontWeight: 800,
@@ -130,7 +150,7 @@ export default function Packages() {
                     fontSize: 36,
                     fontWeight: 900,
                     letterSpacing: "-0.03em",
-                    color: pkg.popular ? "var(--gold)" : "#fff",
+                    color: PKG_PALETTE[pkg.id]?.accent ?? "#fff",
                     lineHeight: 1,
                   }}
                 >
@@ -148,12 +168,12 @@ export default function Packages() {
                     <Check
                       size={14}
                       style={{
-                        color: pkg.popular ? "var(--gold)" : "rgba(255,255,255,0.35)",
+                        color: PKG_PALETTE[pkg.id]?.accent ?? "rgba(255,255,255,0.35)",
                         marginTop: 2,
                         flexShrink: 0,
                       }}
                     />
-                    <span style={{ color: pkg.popular ? "rgba(255,255,255,0.8)" : "var(--text-2)" }}>
+                    <span style={{ color: "rgba(255,255,255,0.75)" }}>
                       {item}
                     </span>
                   </li>
@@ -162,8 +182,15 @@ export default function Packages() {
 
               <Link
                 href={`/agendar?package=${pkg.id}`}
-                className={pkg.popular ? "btn btn-primary" : "btn btn-ghost"}
-                style={{ width: "100%", justifyContent: "center", display: "flex" }}
+                className="btn"
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  display: "flex",
+                  background: PKG_PALETTE[pkg.id]?.accent ?? "var(--yellow)",
+                  color: "#000",
+                  fontWeight: 700,
+                }}
               >
                 Elegir {pkg.name}
               </Link>

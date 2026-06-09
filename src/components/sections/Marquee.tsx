@@ -1,5 +1,7 @@
 "use client";
 
+const DOT_COLORS = ["#FFCA00", "#3B8FFF", "#FF5050", "#22c55e"];
+
 const ITEMS = [
   "🏰 Inflables Temáticos",
   "🕹️ Juegos Arcade",
@@ -35,7 +37,7 @@ export default function Marquee() {
               paddingInline: 24,
               fontSize: 12,
               fontWeight: 700,
-              color: "var(--text-3)",
+              color: "rgba(255,255,255,0.5)",
               whiteSpace: "nowrap",
               textTransform: "uppercase",
               letterSpacing: "0.08em",
@@ -44,7 +46,7 @@ export default function Marquee() {
             {item}
             <span
               aria-hidden
-              style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--gold)", opacity: 0.4, flexShrink: 0 }}
+              style={{ width: 5, height: 5, borderRadius: "50%", background: DOT_COLORS[i % DOT_COLORS.length], opacity: 0.7, flexShrink: 0 }}
             />
           </span>
         ))}

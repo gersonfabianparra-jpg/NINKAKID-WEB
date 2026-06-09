@@ -1,14 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #06060c;
-  --bg-2: #09090f;
-  --bg-card: #0d0d18;
+  --bg: #06050f;
+  --bg-2: #09080f;
+  --bg-card: #0d0c1a;
   --border: rgba(255, 255, 255, 0.07);
   --border-hover: rgba(255, 255, 255, 0.14);
-  --gold: #f5c518;
-  --gold-dim: rgba(245, 197, 24, 0.12);
-  --gold-glow: rgba(245, 197, 24, 0.25);
+
+  /* ── Logo colours ── */
+  --yellow: #FFCA00;
+  --yellow-dim: rgba(255, 202, 0, 0.1);
+  --yellow-glow: rgba(255, 202, 0, 0.25);
+
+  --blue: #3B8FFF;
+  --blue-dim: rgba(59, 143, 255, 0.1);
+  --blue-glow: rgba(59, 143, 255, 0.25);
+
+  --coral: #FF5050;
+  --coral-dim: rgba(255, 80, 80, 0.1);
+  --coral-glow: rgba(255, 80, 80, 0.25);
+
+  --green: #22c55e;
+  --green-dim: rgba(34, 197, 94, 0.1);
+  --green-glow: rgba(34, 197, 94, 0.22);
+
+  /* alias for backwards compat */
+  --gold: var(--yellow);
+  --gold-dim: var(--yellow-dim);
+  --gold-glow: var(--yellow-glow);
+
   --text: #ffffff;
   --text-2: rgba(255, 255, 255, 0.55);
   --text-3: rgba(255, 255, 255, 0.3);
@@ -128,13 +148,13 @@ body {
 }
 
 .btn-primary {
-  background: var(--gold);
+  background: var(--yellow);
   color: #000;
 }
 .btn-primary:hover {
-  background: #ffd040;
+  background: #ffd633;
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(245, 197, 24, 0.3);
+  box-shadow: 0 8px 28px rgba(255, 202, 0, 0.35);
 }
 
 .btn-ghost {

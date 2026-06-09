@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { STATS } from "@/lib/data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const STAT_COLORS = ["#FFCA00", "#3B8FFF", "#FF5050", "#22c55e"];
 
 function ScrambleCounter({ value, suffix }: { value: number; suffix: string }) {
   const [display, setDisplay] = useState("0");
@@ -71,7 +72,7 @@ export default function Stats() {
               transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
               style={{ padding: "40px 28px", textAlign: "center" }}
             >
-              <p style={{ fontSize: "clamp(2rem,4.5vw,3rem)", fontWeight: 900, letterSpacing: "-0.04em", color: "var(--gold)", lineHeight: 1, marginBottom: 8 }}>
+              <p style={{ fontSize: "clamp(2rem,4.5vw,3rem)", fontWeight: 900, letterSpacing: "-0.04em", color: STAT_COLORS[i % STAT_COLORS.length], lineHeight: 1, marginBottom: 8 }}>
                 <ScrambleCounter value={s.value} suffix={s.suffix} />
               </p>
               <p style={{ fontSize: 13, color: "var(--text-3)", fontWeight: 500 }}>{s.label}</p>
