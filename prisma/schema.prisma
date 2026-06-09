@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Booking {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  clientName   String
+  clientEmail  String
+  clientPhone  String
+  eventDate    DateTime
+  eventTime    String
+  eventAddress String
+  guestCount   Int
+  services     String
+  packageId    String?
+  totalPrice   Int
+  status       String   @default("pending")
+  notes        String?
+  notionPageId String?
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  replied   Boolean  @default(false)
+}
