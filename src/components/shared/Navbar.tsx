@@ -44,7 +44,7 @@ export default function Navbar() {
           position: "fixed",
           top: 0, left: 0, right: 0,
           height: 3,
-          background: "linear-gradient(90deg, #FFCA00 0%, #FF5050 40%, #3B8FFF 70%, #22c55e 100%)",
+          background: "linear-gradient(90deg, #FFCA00 0%, #FF5050 40%, #3B8FFF 75%, #22c55e 100%)",
           zIndex: 200,
         }}
       />
@@ -52,26 +52,46 @@ export default function Navbar() {
       <header
         style={{
           position: "fixed",
-          inset: "0 0 auto 0",
+          top: 0, left: 0, right: 0,
           zIndex: 50,
-          transition: "background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease",
-          background: scrolled ? "rgba(7,6,26,0.90)" : "transparent",
+          transition: "background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease",
+          background: scrolled ? "rgba(7,6,26,0.92)" : "transparent",
           backdropFilter: scrolled ? "blur(24px) saturate(160%)" : "none",
           borderBottom: `1px solid ${scrolled ? "rgba(255,255,255,0.07)" : "transparent"}`,
-          boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,202,0,0.04)" : "none",
+          boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.4)" : "none",
         }}
       >
         <div
           className="container"
-          style={{ display: "flex", height: 76, alignItems: "center", justifyContent: "space-between" }}
+          style={{
+            display: "flex",
+            height: 80,
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 24,
+          }}
         >
           {/* ── Logo ── */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", flexShrink: 0 }}>
+          <Link
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              textDecoration: "none",
+              flexShrink: 0,
+            }}
+          >
             <div
               style={{
-                position: "relative", width: 46, height: 46, borderRadius: 13, overflow: "hidden",
-                border: "1.5px solid rgba(255,202,0,0.25)",
-                boxShadow: "0 0 18px rgba(255,202,0,0.12), 0 2px 8px rgba(0,0,0,0.4)",
+                position: "relative",
+                width: 48,
+                height: 48,
+                borderRadius: 14,
+                overflow: "hidden",
+                border: "1.5px solid rgba(255,202,0,0.3)",
+                boxShadow: "0 0 20px rgba(255,202,0,0.15), 0 2px 10px rgba(0,0,0,0.5)",
+                flexShrink: 0,
               }}
             >
               <Image
@@ -82,36 +102,50 @@ export default function Navbar() {
                 unoptimized
               />
             </div>
-            <span style={{ fontWeight: 900, fontSize: 20, letterSpacing: "-0.025em", lineHeight: 1 }}>
-              Ninja<span style={{ color: "var(--blue)" }}>Kid</span>
+            <span style={{ fontWeight: 900, fontSize: 22, letterSpacing: "-0.03em", lineHeight: 1, whiteSpace: "nowrap" }}>
+              Ninja<span style={{ color: "#3B8FFF" }}>Kid</span>
             </span>
           </Link>
 
           {/* ── Desktop nav ── */}
-          <nav className="hidden md:flex" style={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <nav
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              flex: 1,
+              justifyContent: "center",
+            }}
+            className="desktop-nav"
+          >
+            <style>{`
+              @media (max-width: 767px) { .desktop-nav { display: none !important; } }
+            `}</style>
+
             {links.map((l) => (
               <button
                 key={l.href}
                 onClick={() => scroll(l.href)}
                 style={{
                   position: "relative",
-                  padding: "9px 18px",
-                  fontSize: 14,
+                  padding: "10px 20px",
+                  fontSize: 15,
                   fontWeight: 500,
-                  color: active === l.href ? "#fff" : "rgba(255,255,255,0.52)",
-                  background: "transparent",
+                  color: active === l.href ? "#fff" : "rgba(255,255,255,0.5)",
+                  background: active === l.href ? "rgba(255,255,255,0.07)" : "transparent",
                   border: "none",
                   cursor: "pointer",
                   borderRadius: 10,
                   transition: "color 0.15s ease, background 0.15s ease",
+                  whiteSpace: "nowrap",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = "#fff";
                   e.currentTarget.style.background = "rgba(255,255,255,0.07)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = active === l.href ? "#fff" : "rgba(255,255,255,0.52)";
-                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = active === l.href ? "#fff" : "rgba(255,255,255,0.5)";
+                  e.currentTarget.style.background = active === l.href ? "rgba(255,255,255,0.07)" : "transparent";
                 }}
               >
                 {l.label}
@@ -119,8 +153,15 @@ export default function Navbar() {
                   <motion.span
                     layoutId="nav-dot"
                     style={{
-                      position: "absolute", bottom: 5, left: "50%", transform: "translateX(-50%)",
-                      width: 4, height: 4, borderRadius: "50%", background: l.color,
+                      position: "absolute",
+                      bottom: 4,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 4,
+                      height: 4,
+                      borderRadius: "50%",
+                      background: l.color,
+                      boxShadow: `0 0 6px ${l.color}`,
                     }}
                   />
                 )}
@@ -129,26 +170,43 @@ export default function Navbar() {
           </nav>
 
           {/* ── Right ── */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <Link
               href="/agendar"
-              className="btn btn-primary hidden sm:inline-flex"
-              style={{ fontSize: 14, padding: "11px 22px", fontWeight: 700, letterSpacing: "-0.01em" }}
+              className="btn btn-primary"
+              style={{
+                fontSize: 14,
+                padding: "12px 24px",
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
+                whiteSpace: "nowrap",
+              }}
             >
               🎉 Reservar fiesta
             </Link>
             <button
-              className="md:hidden"
               onClick={() => setOpen(!open)}
               style={{
-                display: "flex", alignItems: "center", justifyContent: "center",
-                width: 42, height: 42, borderRadius: 11,
+                display: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 44,
+                height: 44,
+                borderRadius: 12,
                 background: "rgba(255,255,255,0.06)",
                 border: "1px solid rgba(255,255,255,0.1)",
                 color: "rgba(255,255,255,0.8)",
                 cursor: "pointer",
+                flexShrink: 0,
               }}
+              className="mobile-menu-btn"
             >
+              <style>{`
+                @media (max-width: 767px) {
+                  .mobile-menu-btn { display: flex !important; }
+                  .navbar-cta { display: none !important; }
+                }
+              `}</style>
               {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
@@ -159,12 +217,17 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.97 }}
+            initial={{ opacity: 0, y: -12, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.97 }}
+            exit={{ opacity: 0, y: -12, scale: 0.97 }}
             transition={{ duration: 0.22, ease: EASE }}
-            className="md:hidden"
-            style={{ position: "fixed", insetInline: 0, top: 84, zIndex: 40, padding: "0 14px" }}
+            style={{
+              position: "fixed",
+              left: 0, right: 0,
+              top: 88,
+              zIndex: 40,
+              padding: "0 14px",
+            }}
           >
             <div
               style={{
@@ -183,8 +246,8 @@ export default function Navbar() {
                   style={{
                     width: "100%",
                     textAlign: "left",
-                    padding: "17px 20px",
-                    fontSize: 15,
+                    padding: "18px 22px",
+                    fontSize: 16,
                     fontWeight: 600,
                     color: "rgba(255,255,255,0.7)",
                     background: "transparent",
@@ -193,17 +256,32 @@ export default function Navbar() {
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
-                    gap: 14,
+                    gap: 16,
                     transition: "background 0.15s, color 0.15s",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.color = "#fff"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                    e.currentTarget.style.color = "#fff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.color = "rgba(255,255,255,0.7)";
+                  }}
                 >
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: l.color, flexShrink: 0, boxShadow: `0 0 8px ${l.color}` }} />
+                  <span
+                    style={{
+                      width: 9,
+                      height: 9,
+                      borderRadius: "50%",
+                      background: l.color,
+                      flexShrink: 0,
+                      boxShadow: `0 0 8px ${l.color}`,
+                    }}
+                  />
                   {l.label}
                 </button>
               ))}
-              <div style={{ padding: "12px" }}>
+              <div style={{ padding: "14px" }}>
                 <Link
                   href="/agendar"
                   className="btn btn-primary"
