@@ -12,6 +12,8 @@ const REVIEWS = [
     initials: "MJ",
     date: "Enero 2026",
     rating: 5,
+    emoji: "🏰",
+    color: "#FFCA00",
     text: "Roberto llegó puntualísimo y armó todo en menos de 45 minutos. Los niños quedaron felices toda la tarde. Definitivamente volvería a contratar.",
   },
   {
@@ -19,6 +21,8 @@ const REVIEWS = [
     initials: "CM",
     date: "Febrero 2026",
     rating: 5,
+    emoji: "🕹️",
+    color: "#3B8FFF",
     text: "El paquete completo fue una inversión que valió cada peso. La calidad de los inflables es increíble y el servicio fue impecable de principio a fin.",
   },
   {
@@ -26,6 +30,8 @@ const REVIEWS = [
     initials: "AF",
     date: "Marzo 2026",
     rating: 5,
+    emoji: "🎵",
+    color: "#FF5050",
     text: "Contratamos para el cumpleaños de nuestra hija. Superó todas nuestras expectativas. Muy recomendable para quienes quieren una fiesta sin estrés.",
   },
 ];
@@ -64,7 +70,7 @@ export default function Testimonials() {
               transition={{ duration: 0.7, delay: i * 0.13, ease: EASE }}
               style={{
                 background: "var(--bg-card)",
-                border: "1px solid var(--border)",
+                border: `1px solid ${r.color}22`,
                 borderRadius: 20,
                 padding: "28px",
                 position: "relative",
@@ -73,41 +79,33 @@ export default function Testimonials() {
                 transition: "transform 0.12s linear, border-color 0.3s, box-shadow 0.3s",
               }}
               onMouseMove={(e) => {
-                const r = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - r.left) / r.width  - 0.5;
-                const y = (e.clientY - r.top)  / r.height - 0.5;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width  - 0.5;
+                const y = (e.clientY - rect.top)  / rect.height - 0.5;
                 e.currentTarget.style.transform = `perspective(700px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-5px)`;
-                e.currentTarget.style.borderColor = "rgba(245,197,24,0.2)";
-                e.currentTarget.style.boxShadow = "0 20px 50px rgba(0,0,0,0.3)";
+                e.currentTarget.style.borderColor = `${r.color}44`;
+                e.currentTarget.style.boxShadow = `0 20px 50px ${r.color}18`;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) translateY(0)";
-                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.borderColor = `${r.color}22`;
                 e.currentTarget.style.boxShadow = "none";
                 e.currentTarget.style.transition = "transform 0.5s ease, border-color 0.3s, box-shadow 0.4s";
               }}
             >
-              {/* Decorative quote mark */}
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  top: -14,
-                  right: 16,
-                  fontSize: 140,
-                  fontFamily: "Georgia, serif",
-                  lineHeight: 1,
-                  color: "rgba(245,197,24,0.045)",
-                  userSelect: "none",
-                  pointerEvents: "none",
-                }}
-              >
-                "
-              </div>
+              {/* Colored top accent line */}
+              <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: r.color, borderRadius: "20px 20px 0 0" }} />
 
-              <div style={{ display: "flex", gap: 3, marginBottom: 18 }}>
+              {/* Glow */}
+              <div aria-hidden style={{ position: "absolute", top: -30, left: -30, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${r.color}0d 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+              {/* Quote mark in brand color */}
+              <div aria-hidden style={{ position: "absolute", top: -10, right: 16, fontSize: 120, fontFamily: "Georgia, serif", lineHeight: 1, color: `${r.color}10`, userSelect: "none", pointerEvents: "none" }}>"</div>
+
+              {/* Stars */}
+              <div style={{ display: "flex", gap: 3, marginBottom: 18, marginTop: 12 }}>
                 {Array.from({ length: r.rating }).map((_, j) => (
-                  <Star key={j} size={14} fill="var(--gold)" color="var(--gold)" />
+                  <Star key={j} size={14} fill={r.color} color={r.color} />
                 ))}
               </div>
 
@@ -117,17 +115,17 @@ export default function Testimonials() {
 
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <div style={{
-                  width: 40, height: 40, borderRadius: "50%",
-                  background: "rgba(245,197,24,0.08)",
-                  border: "1px solid rgba(245,197,24,0.15)",
+                  width: 42, height: 42, borderRadius: "50%",
+                  background: `${r.color}14`,
+                  border: `1.5px solid ${r.color}44`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 13, fontWeight: 700, color: "var(--gold)", flexShrink: 0,
+                  fontSize: 14, fontWeight: 800, color: r.color, flexShrink: 0,
                 }}>
                   {r.initials}
                 </div>
                 <div>
                   <p style={{ fontSize: 14, fontWeight: 700 }}>{r.name}</p>
-                  <p style={{ fontSize: 12, color: "var(--text-3)" }}>{r.date}</p>
+                  <p style={{ fontSize: 12, color: "var(--text-3)", marginTop: 2 }}>{r.emoji} {r.date}</p>
                 </div>
               </div>
             </motion.div>
