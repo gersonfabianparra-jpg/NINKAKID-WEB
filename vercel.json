@@ -1,11 +1,5 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npx prisma generate && npx prisma db push && npm run build",
-  "regions": ["gru1"],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "ADMIN_SECRET_KEY": "@admin_secret_key",
-    "NOTION_TOKEN": "@notion_token",
-    "NOTION_BOOKINGS_DB_ID": "@notion_bookings_db_id"
-  }
+  "buildCommand": "npx prisma generate && npm run build",
+  "regions": ["gru1"]
 }
