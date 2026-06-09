@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #06050f;
-  --bg-2: #09080f;
-  --bg-card: #0d0c1a;
+  --bg: #07061a;
+  --bg-2: #0a0920;
+  --bg-card: #10102a;
   --border: rgba(255, 255, 255, 0.07);
   --border-hover: rgba(255, 255, 255, 0.14);
 
@@ -51,7 +51,12 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 0% 0%,   rgba(59,143,255,0.09)  0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 5%,  rgba(255,80,80,0.07)   0%, transparent 50%),
+    radial-gradient(ellipse 60% 45% at 50% 100%, rgba(255,202,0,0.06)   0%, transparent 55%),
+    radial-gradient(ellipse 40% 35% at 85% 55%,  rgba(59,143,255,0.05)  0%, transparent 50%);
   color: var(--text);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -63,8 +68,8 @@ body {
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(245, 197, 24, 0.3); border-radius: 4px; }
-::selection { background: rgba(245, 197, 24, 0.2); }
+::-webkit-scrollbar-thumb { background: rgba(255, 202, 0, 0.35); border-radius: 4px; }
+::selection { background: rgba(59, 143, 255, 0.3); }
 
 /* ── Typography scale ── */
 .display {
@@ -94,7 +99,7 @@ body {
 }
 
 .gradient-gold {
-  background: linear-gradient(135deg, #f5c518 0%, #ffaa00 100%);
+  background: linear-gradient(135deg, #FFCA00 0%, #FF8C00 60%, #FF5050 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -277,9 +282,9 @@ body {
   border-radius: 24px;
   background: linear-gradient(
     135deg,
-    rgba(245, 197, 24, 0.35) 0%,
-    rgba(245, 197, 24, 0.04) 45%,
-    rgba(245, 197, 24, 0.28) 100%
+    rgba(255, 202, 0, 0.4)  0%,
+    rgba(59, 143, 255, 0.15) 50%,
+    rgba(255, 80, 80, 0.3)  100%
   );
 }
 

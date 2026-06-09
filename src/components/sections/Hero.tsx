@@ -37,23 +37,23 @@ export default function Hero() {
   return (
     <section ref={ref} style={{ minHeight: "100svh", paddingTop: 72, position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}>
 
-      {/* ── Orb 1 ── */}
+      {/* ── Orb amarillo (logo yellow) ── */}
       <motion.div aria-hidden
         animate={{ x: [0, 55, 0], y: [0, -45, 0] }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", top: "-15%", left: "-8%", width: 820, height: 820, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 65%)", filter: "blur(55px)", pointerEvents: "none" }}
+        style={{ position: "absolute", top: "-15%", left: "-8%", width: 820, height: 820, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,202,0,0.10) 0%, transparent 65%)", filter: "blur(55px)", pointerEvents: "none" }}
       />
-      {/* ── Orb 2 ── */}
+      {/* ── Orb azul (logo blue) ── */}
       <motion.div aria-hidden
         animate={{ x: [0, -55, 0], y: [0, 65, 0] }}
         transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 7 }}
-        style={{ position: "absolute", bottom: "-5%", right: "-8%", width: 680, height: 680, borderRadius: "50%", background: "radial-gradient(circle, rgba(130,60,255,0.045) 0%, transparent 65%)", filter: "blur(65px)", pointerEvents: "none" }}
+        style={{ position: "absolute", bottom: "-5%", right: "-8%", width: 680, height: 680, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,143,255,0.09) 0%, transparent 65%)", filter: "blur(65px)", pointerEvents: "none" }}
       />
-      {/* ── Orb 3 (accent) ── */}
+      {/* ── Orb coral (logo red) ── */}
       <motion.div aria-hidden
         animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-        style={{ position: "absolute", top: "40%", left: "45%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,197,24,0.04) 0%, transparent 70%)", filter: "blur(40px)", pointerEvents: "none" }}
+        style={{ position: "absolute", top: "35%", left: "42%", width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,80,80,0.06) 0%, transparent 70%)", filter: "blur(40px)", pointerEvents: "none" }}
       />
 
       {/* ── Dot grid ── */}
