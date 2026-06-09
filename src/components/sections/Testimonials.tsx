@@ -62,7 +62,6 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: i * 0.13, ease: EASE }}
-              whileHover={{ y: -5, transition: { duration: 0.22 } }}
               style={{
                 background: "var(--bg-card)",
                 border: "1px solid var(--border)",
@@ -71,6 +70,21 @@ export default function Testimonials() {
                 position: "relative",
                 overflow: "hidden",
                 cursor: "default",
+                transition: "transform 0.12s linear, border-color 0.3s, box-shadow 0.3s",
+              }}
+              onMouseMove={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width  - 0.5;
+                const y = (e.clientY - r.top)  / r.height - 0.5;
+                e.currentTarget.style.transform = `perspective(700px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-5px)`;
+                e.currentTarget.style.borderColor = "rgba(245,197,24,0.2)";
+                e.currentTarget.style.boxShadow = "0 20px 50px rgba(0,0,0,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) translateY(0)";
+                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.transition = "transform 0.5s ease, border-color 0.3s, box-shadow 0.4s";
               }}
             >
               {/* Decorative quote mark */}

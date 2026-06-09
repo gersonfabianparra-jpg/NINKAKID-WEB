@@ -63,13 +63,27 @@ export default function Packages() {
                     boxShadow: { duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 1 },
                   }
                 : { duration: 0.6, delay: i * 0.1, ease: EASE }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
               style={{
                 background: pkg.popular ? "rgba(245,197,24,0.05)" : "var(--bg-card)",
                 border: `1px solid ${pkg.popular ? "rgba(245,197,24,0.3)" : "var(--border)"}`,
                 borderRadius: 20,
                 padding: 28,
                 position: "relative",
+                transition: "transform 0.12s linear, box-shadow 0.3s",
+              }}
+              onMouseMove={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width  - 0.5;
+                const y = (e.clientY - r.top)  / r.height - 0.5;
+                e.currentTarget.style.transform = `perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-4px) scale(1.01)`;
+                e.currentTarget.style.boxShadow = pkg.popular
+                  ? "0 24px 60px rgba(245,197,24,0.15)"
+                  : "0 20px 50px rgba(0,0,0,0.35)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)";
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.transition = "transform 0.5s ease, box-shadow 0.4s";
               }}
             >
               {/* Popular badge */}

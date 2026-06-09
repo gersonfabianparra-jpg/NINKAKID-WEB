@@ -61,10 +61,21 @@ function ServiceCard({
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.75, delay: i * 0.13, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -3, transition: { duration: 0.22 } }}
-      style={{ borderRadius: 20, overflow: "hidden", border: "1px solid var(--border)", background: "var(--bg-card)", transition: "border-color 0.3s" }}
-      onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(245,197,24,0.2)")}
-      onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
+      style={{ borderRadius: 20, overflow: "hidden", border: "1px solid var(--border)", background: "var(--bg-card)", transition: "border-color 0.3s, transform 0.12s linear, box-shadow 0.3s" }}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        e.currentTarget.style.transform = `perspective(900px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg) translateY(-3px)`;
+        e.currentTarget.style.borderColor = "rgba(245,197,24,0.22)";
+        e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.35)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
+        e.currentTarget.style.borderColor = "var(--border)";
+        e.currentTarget.style.boxShadow = "none";
+        e.currentTarget.style.transition = "border-color 0.3s, transform 0.5s ease, box-shadow 0.4s";
+      }}
     >
       <div
         className="svc-row"
