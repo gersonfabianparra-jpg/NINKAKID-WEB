@@ -235,17 +235,6 @@ body {
   75%, 100% { transform: scale(2.2); opacity: 0; }
 }
 
-/* ── Custom cursor (desktop only) ── */
-@media (pointer: fine) {
-  *, *::before, *::after { cursor: none !important; }
-}
-.custom-cursor-dot,
-.custom-cursor-ring { display: none; }
-@media (pointer: fine) {
-  .custom-cursor-dot,
-  .custom-cursor-ring { display: block; }
-}
-
 /* ── Glow ── */
 .glow-gold {
   box-shadow: 0 0 40px rgba(245, 197, 24, 0.15), 0 0 80px rgba(245, 197, 24, 0.06);
