@@ -41,13 +41,14 @@ export default function Gallery() {
 
         {/* Grid */}
         <div
+          className="gallery-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: 12,
           }}
         >
-          <style>{`@media(min-width:640px){ .gallery-grid{ grid-template-columns: repeat(3,1fr)!important; } }`}</style>
+          <style>{`@media(min-width:640px){ .gallery-grid{ grid-template-columns: repeat(3,1fr); } }`}</style>
           {GALLERY_IMAGES.map((img, i) => (
             <motion.button
               key={img.src}

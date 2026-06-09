@@ -235,11 +235,11 @@ function BookingFlow() {
             <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>¿Cuándo es la fiesta?</h2>
             <p style={{ fontSize: 14, color: "var(--text-2)", marginBottom: 28 }}>Selecciona la fecha y la hora de inicio del evento.</p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
-              <style>{`@media(min-width:560px){ .date-grid{ grid-template-columns:1fr 1fr!important; } }`}</style>
+            <div className="date-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
+              <style>{`@media(min-width:560px){ .date-grid{ grid-template-columns:1fr 1fr; } }`}</style>
 
               {/* Calendar */}
-              <div className="date-grid" style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px" }}>
+              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                   <button onClick={() => setMonth(subMonths(month, 1))} style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.05)", border: "1px solid var(--border)", borderRadius: 8, color: "rgba(255,255,255,0.6)", cursor: "pointer" }}><ChevronLeft size={16} /></button>
                   <p style={{ fontSize: 14, fontWeight: 600, color: "#fff", textTransform: "capitalize" }}>{format(month, "MMMM yyyy", { locale: es })}</p>
@@ -280,7 +280,7 @@ function BookingFlow() {
               </div>
 
               {/* Time */}
-              <div className="date-grid" style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px" }}>
+              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px" }}>
                 <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }}>Hora de inicio</p>
                 {date ? (
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 6 }}>

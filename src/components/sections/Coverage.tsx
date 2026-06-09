@@ -28,17 +28,17 @@ export default function Coverage() {
     <section id="cobertura" ref={ref} style={{ paddingBlock: "100px", background: "var(--bg-2)" }}>
       <div className="container">
         <div
+          className="coverage-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
             gap: 60,
           }}
         >
-          <style>{`@media(min-width:768px){ .coverage-grid{ grid-template-columns:1fr 1fr!important; } }`}</style>
+          <style>{`@media(min-width:768px){ .coverage-grid{ grid-template-columns:1fr 1fr; } }`}</style>
 
           {/* Left */}
           <motion.div
-            className="coverage-grid"
             initial={{ opacity: 0, x: -24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
@@ -82,7 +82,6 @@ export default function Coverage() {
 
           {/* Right */}
           <motion.div
-            className="coverage-grid"
             initial={{ opacity: 0, x: 24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}

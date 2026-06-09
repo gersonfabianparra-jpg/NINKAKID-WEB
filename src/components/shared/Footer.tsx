@@ -24,6 +24,7 @@ export default function Footer() {
     >
       <div className="container">
         <div
+          className="footer-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
@@ -31,10 +32,10 @@ export default function Footer() {
             marginBottom: 40,
           }}
         >
-          <style>{`@media(min-width:640px){ .footer-grid{ grid-template-columns:1.5fr 1fr 1fr!important; gap:40px!important; } }`}</style>
+          <style>{`@media(min-width:640px){ .footer-grid{ grid-template-columns:1.5fr 1fr 1fr; gap:40px; } }`}</style>
 
           {/* Brand */}
-          <div className="footer-grid">
+          <div>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 14 }}>
               <div style={{ position: "relative", width: 32, height: 32, borderRadius: 8, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <Image
@@ -86,7 +87,7 @@ export default function Footer() {
           </div>
 
           {/* Nav */}
-          <div className="footer-grid">
+          <div>
             <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 16 }}>Navegación</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {[
@@ -110,7 +111,7 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="footer-grid">
+          <div>
             <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-3)", marginBottom: 16 }}>Contacto</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
               <a href="https://wa.me/56912345678" style={{ fontSize: 14, color: "var(--text-3)", textDecoration: "none" }}>+56 9 1234 5678</a>

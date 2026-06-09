@@ -36,24 +36,29 @@ export default function Stats() {
           style={{ marginBottom: 0, background: "linear-gradient(90deg, transparent, var(--border), transparent)" }}
         />
         <div
-          className="grid"
+          className="stats-grid"
           style={{
+            display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: 0,
           }}
         >
-          {/* On md+: 4 columns */}
-          <style>{`@media(min-width:768px){ .stats-grid{ grid-template-columns: repeat(4,1fr)!important; } }`}</style>
+          <style>{`
+            .stats-grid > *:nth-child(odd) { border-right: 1px solid var(--border); }
+            @media(min-width:768px) {
+              .stats-grid { grid-template-columns: repeat(4,1fr); }
+              .stats-grid > * { border-right: 1px solid var(--border); }
+              .stats-grid > *:last-child { border-right: none; }
+            }
+          `}</style>
           {STATS.map((s, i) => (
             <motion.div
               key={s.label}
-              className="stats-grid"
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.08 }}
               style={{
                 padding: "36px 28px",
-                borderRight: i < STATS.length - 1 ? "1px solid var(--border)" : "none",
                 textAlign: "center",
               }}
             >

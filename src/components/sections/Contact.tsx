@@ -55,17 +55,17 @@ export default function Contact() {
     <section id="contacto" ref={ref} style={{ paddingBlock: "100px", background: "var(--bg-2)" }}>
       <div className="container">
         <div
+          className="contact-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
             gap: 48,
           }}
         >
-          <style>{`@media(min-width:768px){ .contact-grid{ grid-template-columns:1fr 1fr!important; gap:60px!important; } }`}</style>
+          <style>{`@media(min-width:768px){ .contact-grid{ grid-template-columns:1fr 1fr; gap:60px; } }`}</style>
 
           {/* Left */}
           <motion.div
-            className="contact-grid"
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
@@ -115,7 +115,6 @@ export default function Contact() {
 
           {/* Right: Form */}
           <motion.div
-            className="contact-grid"
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}

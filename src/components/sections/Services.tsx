@@ -22,12 +22,11 @@ export default function Services() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: EASE }}
-          style={{ marginBottom: 56 }}
+          style={{ marginBottom: 56, textAlign: "center" }}
         >
           <span className="label">✦ Servicios</span>
-          <h2 className="heading-1" style={{ maxWidth: 480 }}>
-            Todo lo que necesitas<br />
-            en un solo lugar
+          <h2 className="heading-1" style={{ maxWidth: 480, marginInline: "auto" }}>
+            Todo lo que necesitas en un solo lugar
           </h2>
         </motion.div>
 
