@@ -1,11 +1,14 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, MapPin, Star, Check, ChevronDown } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+/* Rotating accent words — creates a cycling effect on the headline */
+const CYCLING = ["ÉPICO", "MÁGICO", "INCREÍBLE", "ÚNICO"];
 
 const CONFETTI = [
   { color: "#FFCA00", size: 9,  x: 12, y: 18, dur: 6,   delay: 0   },
@@ -26,51 +29,23 @@ const HERO_STATS = [
   { n: "30+",  label: "Comunas cubiertas",   color: "#FF5050" },
 ];
 
-/* Heading lines with staggered 3-D flip-up */
-const LINES = [
-  { text: "LA FIESTA",   delay: 0.05, accent: false },
-  { text: "QUE TU HIJO", delay: 0.20, accent: false },
-  { text: "MERECE",      delay: 0.35, accent: true  },
-];
-
-function HeadingLine({ text, delay, accent }: { text: string; delay: number; accent?: boolean }) {
-  const inner = (
-    <motion.span
-      initial={{ opacity: 0, y: 72, rotateX: -35, filter: "blur(12px)" }}
-      animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
-      transition={{ duration: 1.1, delay, ease: EASE }}
-      style={{ display: "block", transformOrigin: "bottom center", transformStyle: "preserve-3d" }}
-    >
-      {text}
-    </motion.span>
-  );
-
-  if (accent) return (
-    <span
-      style={{
-        background: "linear-gradient(100deg, #FFCA00 0%, #FF8C00 30%, #FF5050 65%, #FFCA00 100%)",
-        backgroundSize: "300% auto",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        backgroundClip: "text",
-        animation: "heroShimmer 4s linear infinite",
-        display: "block",
-      }}
-    >
-      {inner}
-    </span>
-  );
-
-  return inner;
-}
+const SERVICES = ["Inflables", "Arcade", "Sonido", "Domicilio"];
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
+  const [cycleIdx, setCycleIdx] = useState(0);
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const cardY   = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const gridBgY = useTransform(scrollYProgress, [0, 1], [0, 110]);
   const textY   = useTransform(scrollYProgress, [0, 1], [0, 40]);
   const bgTextY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+
+  /* Cycle through accent words every 2.4 s */
+  useEffect(() => {
+    const t = setInterval(() => setCycleIdx((i) => (i + 1) % CYCLING.length), 2400);
+    return () => clearInterval(t);
+  }, []);
 
   return (
     <section ref={ref} style={{ minHeight: "100svh", paddingTop: 80, position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}>
@@ -79,14 +54,14 @@ export default function Hero() {
           0%   { background-position: 200% center; }
           100% { background-position: -200% center; }
         }
-        @keyframes accentGrow {
-          from { transform: scaleX(0); }
-          to   { transform: scaleX(1); }
+        @keyframes pulseStar {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.7; transform: scale(1.15); }
         }
       `}</style>
 
-      {/* Giant ghost text */}
-      <motion.div aria-hidden style={{ y: bgTextY, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontFamily: "var(--font-bebas)", fontSize: "clamp(140px,26vw,340px)", fontWeight: 400, letterSpacing: "0.04em", color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,0.042)", whiteSpace: "nowrap", pointerEvents: "none", userSelect: "none", zIndex: 0, lineHeight: 1 }}>
+      {/* Ghost background text */}
+      <motion.div aria-hidden style={{ y: bgTextY, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontFamily: "var(--font-bebas)", fontSize: "clamp(150px,28vw,360px)", fontWeight: 400, letterSpacing: "0.05em", color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,0.038)", whiteSpace: "nowrap", pointerEvents: "none", userSelect: "none", zIndex: 0, lineHeight: 1 }}>
         NINJA KID
       </motion.div>
 
@@ -99,7 +74,7 @@ export default function Hero() {
         />
       ))}
 
-      {/* Orbs */}
+      {/* Ambient orbs */}
       <motion.div aria-hidden animate={{ x: [0, 55, 0], y: [0, -45, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} style={{ position: "absolute", top: "-15%", left: "-8%", width: 820, height: 820, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,202,0,0.10) 0%, transparent 65%)", filter: "blur(55px)", pointerEvents: "none", zIndex: 0 }} />
       <motion.div aria-hidden animate={{ x: [0, -55, 0], y: [0, 65, 0] }} transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 7 }} style={{ position: "absolute", bottom: "-5%", right: "-8%", width: 680, height: 680, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,143,255,0.09) 0%, transparent 65%)", filter: "blur(65px)", pointerEvents: "none", zIndex: 0 }} />
       <motion.div aria-hidden animate={{ x: [0, 30, 0], y: [0, 30, 0] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 3 }} style={{ position: "absolute", top: "35%", left: "42%", width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,80,80,0.06) 0%, transparent 70%)", filter: "blur(40px)", pointerEvents: "none", zIndex: 0 }} />
@@ -110,7 +85,7 @@ export default function Hero() {
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-split" style={{ display: "grid", gridTemplateColumns: "1fr", gap: 48, alignItems: "center", paddingBlock: "80px 60px" }}>
           <style>{`
-            @media(min-width:900px){ .hero-split{ grid-template-columns:1.1fr 0.9fr!important; gap:72px!important; } }
+            @media(min-width:900px){ .hero-split{ grid-template-columns:1.15fr 0.85fr!important; gap:80px!important; } }
             @media(max-width:899px){ .hero-card-float{ display:none!important; } }
           `}</style>
 
@@ -118,7 +93,7 @@ export default function Hero() {
           <motion.div style={{ y: textY }}>
 
             {/* Badge */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }} style={{ marginBottom: 32 }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }} style={{ marginBottom: 36 }}>
               <span className="badge">
                 <span className="dot-pulse" />
                 <MapPin size={11} style={{ opacity: 0.5 }} />
@@ -126,44 +101,125 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* ── MAIN HEADING — Bebas Neue, massive ── */}
-            <h1 style={{
-              fontFamily: "var(--font-bebas)",
-              fontSize: "clamp(5rem, 11.5vw, 10.5rem)",
-              fontWeight: 400,
-              lineHeight: 0.88,
-              letterSpacing: "0.01em",
-              textTransform: "uppercase",
-              marginBottom: 12,
-              perspective: "1000px",
-            }}>
-              {LINES.map((l) => (
-                <HeadingLine key={l.text} text={l.text} delay={l.delay} accent={l.accent} />
-              ))}
-            </h1>
+            {/* ── HEADLINE ──────────────────────────────── */}
+            <div style={{ marginBottom: 8 }}>
 
-            {/* Animated accent underline */}
+              {/* Line 1: "EL CUMPLEAÑOS" — smaller label weight */}
+              <motion.p
+                initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.9, delay: 0.05, ease: EASE }}
+                style={{
+                  fontFamily: "var(--font-bebas)",
+                  fontSize: "clamp(2rem, 4.5vw, 4.2rem)",
+                  fontWeight: 400,
+                  lineHeight: 1,
+                  letterSpacing: "0.06em",
+                  color: "rgba(255,255,255,0.45)",
+                  textTransform: "uppercase",
+                  marginBottom: 2,
+                }}
+              >
+                EL CUMPLEAÑOS
+              </motion.p>
+
+              {/* Line 2: "MÁS" + cycling word */}
+              <motion.div
+                initial={{ opacity: 0, y: 52, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 1, delay: 0.18, ease: EASE }}
+                style={{ display: "flex", alignItems: "baseline", gap: "0.18em", lineHeight: 0.88, marginBottom: 4, flexWrap: "wrap" }}
+              >
+                {/* "MÁS" — outline/stroke ghost */}
+                <span style={{
+                  fontFamily: "var(--font-bebas)",
+                  fontSize: "clamp(4.8rem, 12vw, 11rem)",
+                  fontWeight: 400,
+                  letterSpacing: "0.01em",
+                  color: "transparent",
+                  WebkitTextStroke: "2px rgba(255,255,255,0.3)",
+                  textTransform: "uppercase",
+                  userSelect: "none",
+                }}>
+                  MÁS
+                </span>
+
+                {/* Cycling accent word with shimmer */}
+                <div style={{ position: "relative", overflow: "hidden", height: "clamp(4.8rem, 12vw, 11rem)", display: "flex", alignItems: "center" }}>
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={CYCLING[cycleIdx]}
+                      initial={{ y: "100%", opacity: 0, filter: "blur(8px)" }}
+                      animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                      exit={{ y: "-100%", opacity: 0, filter: "blur(8px)" }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                      style={{
+                        fontFamily: "var(--font-bebas)",
+                        fontSize: "clamp(4.8rem, 12vw, 11rem)",
+                        fontWeight: 400,
+                        letterSpacing: "0.01em",
+                        textTransform: "uppercase",
+                        display: "block",
+                        background: "linear-gradient(100deg, #FFCA00 0%, #FF8C00 28%, #FF5050 58%, #FFCA00 100%)",
+                        backgroundSize: "300% auto",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                        animation: "heroShimmer 3.5s linear infinite",
+                      }}
+                    >
+                      {CYCLING[cycleIdx]}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+
+              {/* Line 3: "DE SU VIDA" — solid, slightly smaller */}
+              <motion.p
+                initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.9, delay: 0.34, ease: EASE }}
+                style={{
+                  fontFamily: "var(--font-bebas)",
+                  fontSize: "clamp(2.8rem, 6.5vw, 6rem)",
+                  fontWeight: 400,
+                  lineHeight: 1,
+                  letterSpacing: "0.03em",
+                  color: "rgba(255,255,255,0.88)",
+                  textTransform: "uppercase",
+                  marginBottom: 0,
+                }}
+              >
+                DE SU VIDA
+              </motion.p>
+            </div>
+
+            {/* Services pill-strip */}
             <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, delay: 0.9, ease: EASE }}
-              style={{
-                height: 4,
-                width: "clamp(140px, 26vw, 320px)",
-                borderRadius: 99,
-                background: "linear-gradient(90deg, #FFCA00, #FF8C00, #FF5050)",
-                transformOrigin: "left center",
-                marginBottom: 32,
-                boxShadow: "0 0 18px rgba(255,202,0,0.35)",
-              }}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+              style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32, marginTop: 20 }}
+            >
+              {SERVICES.map((s, i) => (
+                <span key={s} style={{
+                  fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase",
+                  padding: "6px 14px", borderRadius: 100,
+                  background: ["rgba(255,202,0,0.1)","rgba(59,143,255,0.1)","rgba(255,80,80,0.1)","rgba(34,197,94,0.1)"][i],
+                  color: ["#FFCA00","#3B8FFF","#FF5050","#22c55e"][i],
+                  border: `1px solid ${["rgba(255,202,0,0.2)","rgba(59,143,255,0.2)","rgba(255,80,80,0.2)","rgba(34,197,94,0.2)"][i]}`,
+                }}>
+                  {s}
+                </span>
+              ))}
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6, ease: EASE }}
               style={{ fontSize: "clamp(15px,1.7vw,18px)", color: "var(--text-2)", maxWidth: 460, lineHeight: 1.75, marginBottom: 38 }}
             >
-              Inflables temáticos, arcade y sonido profesional. Llegamos a tu domicilio, instalamos todo y recogemos cuando termina.
+              Inflables temáticos, arcade y sonido profesional directo a tu domicilio en Santiago. Instalamos todo — tú solo disfruta.
             </motion.p>
 
             {/* CTAs */}
@@ -219,7 +275,7 @@ export default function Hero() {
                   <p style={{ fontSize: 11, fontWeight: 600, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>Próximo evento</p>
                   <p style={{ fontWeight: 800, fontSize: 17, marginBottom: 12 }}>Cumpleaños de Sofía 🎂</p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-                    {[["📅","Sáb 15 Jun"],["🕒","15:00 hrs"],["📍","Las Condes"]].map(([icon,text]) => (
+                    {[["📅","Sáb 15 Jun"],["🕒","15:00 hrs"],["📍","Las Condes"]].map(([icon, text]) => (
                       <div key={text} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "var(--text-2)" }}>
                         <span>{icon}</span><span>{text}</span>
                       </div>
