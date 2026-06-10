@@ -23,13 +23,13 @@ export default function Services() {
     <section id="servicios" ref={ref} style={{ paddingBlock: "120px" }}>
       <div className="container">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE }}
+          initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
+          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.8, ease: EASE }}
           style={{ marginBottom: 68, textAlign: "center" }}
         >
           <span className="label">✦ Servicios</span>
-          <h2 className="heading-1" style={{ maxWidth: 520, marginInline: "auto", marginBottom: 14 }}>
+          <h2 className="heading-1 text-shimmer" style={{ maxWidth: 520, marginInline: "auto", marginBottom: 14, display: "block" }}>
             Todo lo que necesitas en un solo lugar
           </h2>
           <p style={{ fontSize: 16, color: "var(--text-2)", maxWidth: 400, marginInline: "auto" }}>

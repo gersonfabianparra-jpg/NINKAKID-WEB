@@ -40,13 +40,13 @@ export default function Packages() {
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: EASE }}
+          initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.7, ease: EASE }}
           style={{ marginBottom: 56, textAlign: "center" }}
         >
           <span className="label">✦ Paquetes</span>
-          <h2 className="heading-1">Elige tu paquete</h2>
+          <h2 className="heading-1 text-shimmer" style={{ display: "block" }}>Elige tu paquete</h2>
           <p style={{ fontSize: 16, color: "var(--text-2)", marginTop: 12, maxWidth: 400, marginInline: "auto" }}>
             Sin letras chicas. Instalación, tiempo y retiro incluidos.
           </p>
@@ -64,7 +64,7 @@ export default function Packages() {
           {PACKAGES.map((pkg, i) => (
             <motion.div
               key={pkg.id}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 32, scale: 0.93 }}
               animate={inView
                 ? {
                     opacity: 1, y: 0,
@@ -84,9 +84,10 @@ export default function Packages() {
                     boxShadow: { duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 1 },
                   }
                 : { duration: 0.6, delay: i * 0.1, ease: EASE }}
+              className={pkg.popular ? "spin-border" : ""}
               style={{
                 background: PKG_PALETTE[pkg.id]?.bg ?? "var(--bg-card)",
-                border: `1px solid ${PKG_PALETTE[pkg.id]?.border ?? "var(--border)"}`,
+                border: pkg.popular ? "none" : `1px solid ${PKG_PALETTE[pkg.id]?.border ?? "var(--border)"}`,
                 borderRadius: 20,
                 padding: 28,
                 position: "relative",
