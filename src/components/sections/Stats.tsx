@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import SectionHeading from "@/components/shared/SectionHeading";
 import { STATS } from "@/lib/data";
 
 const EASE  = [0.22, 1, 0.36, 1] as const;
@@ -67,15 +68,13 @@ export default function Stats() {
       <div aria-hidden className="dot-grid" style={{ position: "absolute", inset: 0, maskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%)", pointerEvents: "none" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
-        {/* Section label */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: EASE }}
-          style={{ textAlign: "center", marginBottom: 56 }}
-        >
-          <span className="label">✦ Números que hablan</span>
-        </motion.div>
+        <SectionHeading
+          label="✦ Números que hablan"
+          title="Los números no mienten"
+          ghost="NÚMEROS"
+          color="#FFCA00"
+          mb={52}
+        />
 
         <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 3 }}>
           <style>{`@media(min-width:768px){ .stats-grid{ grid-template-columns: repeat(4,1fr)!important; } }`}</style>

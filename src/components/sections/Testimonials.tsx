@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Star } from "lucide-react";
+import SectionHeading from "@/components/shared/SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -43,18 +44,14 @@ export default function Testimonials() {
   return (
     <section ref={ref} style={{ paddingBlock: "120px" }}>
       <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE }}
-          style={{ textAlign: "center", marginBottom: 64 }}
-        >
-          <span className="label">✦ Testimonios</span>
-          <h2 className="heading-1" style={{ marginBottom: 14 }}>Lo que dicen las familias</h2>
-          <p style={{ fontSize: 16, color: "var(--text-2)", maxWidth: 380, marginInline: "auto" }}>
-            Más de 500 fiestas felices en Santiago. Aquí algunas historias.
-          </p>
-        </motion.div>
+        <SectionHeading
+          label="✦ Testimonios"
+          title="Lo que dicen las familias"
+          subtitle="Más de 500 fiestas felices en Santiago. Aquí algunas historias."
+          ghost="FAMILIAS"
+          color="#FFCA00"
+          mb={64}
+        />
 
         <div
           className="reviews-grid"

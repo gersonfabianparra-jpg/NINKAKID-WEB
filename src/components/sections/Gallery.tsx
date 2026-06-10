@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from "fra
 import Image from "next/image";
 import { X, ZoomIn } from "lucide-react";
 import { GALLERY_IMAGES } from "@/lib/data";
+import SectionHeading from "@/components/shared/SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -21,21 +22,25 @@ export default function Gallery() {
       <div className="container">
 
         {/* Header with parallax */}
-        <motion.div
-          style={{ y: headerY }}
-          initial={{ opacity: 0, y: 32 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE }}
-          // Note: framer merges style.y with animate.y on first render — works fine
-        >
+        <motion.div style={{ y: headerY }}>
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16, marginBottom: 48 }}>
-            <div>
-              <span className="label">✦ Galería</span>
-              <h2 className="heading-1">Momentos reales</h2>
-            </div>
-            <a href="https://instagram.com/ninjakidchile" target="_blank" rel="noopener noreferrer" className="btn btn-ghost" style={{ fontSize: 13, padding: "10px 18px" }}>
-              Ver Instagram →
-            </a>
+            <SectionHeading
+              label="✦ Galería"
+              title="Momentos reales"
+              ghost="GALERÍA"
+              align="left"
+              color="#3B8FFF"
+              mb={0}
+            />
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+            >
+              <a href="https://instagram.com/ninjakidchile" target="_blank" rel="noopener noreferrer" className="btn btn-ghost" style={{ fontSize: 13, padding: "10px 18px" }}>
+                Ver Instagram →
+              </a>
+            </motion.div>
           </div>
         </motion.div>
 

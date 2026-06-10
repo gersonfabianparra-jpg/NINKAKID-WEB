@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
 import { FAQS } from "@/lib/data";
+import SectionHeading from "@/components/shared/SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -15,15 +16,13 @@ export default function FAQ() {
   return (
     <section id="faq" ref={ref} style={{ paddingBlock: "120px" }}>
       <div className="container" style={{ maxWidth: 780 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE }}
-          style={{ marginBottom: 56, textAlign: "center" }}
-        >
-          <span className="label">✦ FAQ</span>
-          <h2 className="heading-1">Preguntas frecuentes</h2>
-        </motion.div>
+        <SectionHeading
+          label="✦ FAQ"
+          title="Preguntas frecuentes"
+          ghost="FAQ"
+          color="#FF5050"
+          mb={56}
+        />
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {FAQS.map((faq, i) => (

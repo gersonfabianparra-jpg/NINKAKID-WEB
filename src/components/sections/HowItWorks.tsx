@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SectionHeading from "@/components/shared/SectionHeading";
 import Link from "next/link";
 
 const EASE  = [0.22, 1, 0.36, 1] as const;
@@ -52,21 +53,14 @@ export default function HowItWorks() {
       </div>
 
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
-          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 0.8, ease: EASE }}
-          style={{ textAlign: "center", marginBottom: 72 }}
-        >
-          <span className="label">✦ Cómo funciona</span>
-          <h2 className="heading-1 text-shimmer" style={{ marginBottom: 14, display: "block" }}>
-            Así de simple
-          </h2>
-          <p style={{ fontSize: 16, color: "var(--text-2)", maxWidth: 400, marginInline: "auto" }}>
-            4 pasos y tu fiesta está lista. Nosotros hacemos el trabajo pesado.
-          </p>
-        </motion.div>
+        <SectionHeading
+          label="✦ Cómo funciona"
+          title="Así de simple"
+          subtitle="4 pasos y tu fiesta está lista. Nosotros hacemos el trabajo pesado."
+          ghost="PROCESO"
+          color="#3B8FFF"
+          mb={72}
+        />
 
         {/* Steps grid */}
         <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, position: "relative" }}>

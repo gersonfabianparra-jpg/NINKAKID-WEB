@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SectionHeading from "@/components/shared/SectionHeading";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { PACKAGES } from "@/lib/data";
@@ -39,18 +40,14 @@ export default function Packages() {
       <div className="container">
 
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-          animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 0.7, ease: EASE }}
-          style={{ marginBottom: 56, textAlign: "center" }}
-        >
-          <span className="label">✦ Paquetes</span>
-          <h2 className="heading-1 text-shimmer" style={{ display: "block" }}>Elige tu paquete</h2>
-          <p style={{ fontSize: 16, color: "var(--text-2)", marginTop: 12, maxWidth: 400, marginInline: "auto" }}>
-            Sin letras chicas. Instalación, tiempo y retiro incluidos.
-          </p>
-        </motion.div>
+        <SectionHeading
+          label="✦ Paquetes"
+          title="Elige tu paquete"
+          subtitle="Sin letras chicas. Instalación, tiempo y retiro incluidos."
+          ghost="PAQUETES"
+          color="#FFCA00"
+          mb={56}
+        />
 
         {/* Cards */}
         <div

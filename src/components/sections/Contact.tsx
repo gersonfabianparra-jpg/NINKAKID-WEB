@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, Phone, Send, CheckCircle } from "lucide-react";
+import SectionHeading from "@/components/shared/SectionHeading";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -70,10 +71,14 @@ export default function Contact() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
           >
-            <span className="label">✦ Contacto</span>
-            <h2 className="heading-1" style={{ marginBottom: 16 }}>
-              Hablemos de<br />tu fiesta
-            </h2>
+            <SectionHeading
+              label="✦ Contacto"
+              title={<>Hablemos de<br />tu fiesta</>}
+              ghost="CONTACTO"
+              align="left"
+              color="#22c55e"
+              mb={20}
+            />
             <p style={{ fontSize: 15, color: "var(--text-2)", marginBottom: 36, lineHeight: 1.7 }}>
               ¿Tienes dudas? ¿Quieres un presupuesto? Escríbenos y te respondemos antes de 24 horas.
             </p>

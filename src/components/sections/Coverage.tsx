@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Truck, Clock, CheckCircle, MapPin } from "lucide-react";
+import SectionHeading from "@/components/shared/SectionHeading";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -43,11 +44,14 @@ export default function Coverage() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
           >
-            <span className="label">✦ Cobertura</span>
-            <h2 className="heading-1" style={{ marginBottom: 16 }}>
-              Llegamos a toda<br />
-              <span className="text-gold">la RM</span>
-            </h2>
+            <SectionHeading
+              label="✦ Cobertura"
+              title={<>Llegamos a toda<br /><span style={{ color: "var(--yellow)" }}>la RM</span></>}
+              ghost="COBERTURA"
+              align="left"
+              color="#3B8FFF"
+              mb={20}
+            />
             <p style={{ fontSize: 15, color: "var(--text-2)", marginBottom: 36, lineHeight: 1.7 }}>
               No importa en qué comuna estés. Llevamos, instalamos y retiramos todo. Sin preocupaciones.
             </p>
