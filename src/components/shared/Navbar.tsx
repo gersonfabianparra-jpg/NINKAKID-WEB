@@ -112,7 +112,7 @@ export default function Navbar() {
               }}
             >
               <Image
-                src="https://ninjakid.cl/wp-content/uploads/2026/03/ChatGPT-Image-22-ene-2026-14_54_24.png"
+                src="/images/logo.png"
                 alt="NinjaKid"
                 fill
                 className="object-cover"

@@ -9,7 +9,7 @@ export const SERVICES = [
     features: ["Castillos temáticos", "Toboganes gigantes", "Laberintos inflables", "Piscinas de pelotas"],
     color: "from-yellow-500 to-orange-500",
     glow: "yellow",
-    image: "https://ninjakid.cl/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-17-at-10.19.01-PM-1-682x1024.jpeg",
+    image: "/images/inflable.jpeg",
   },
   {
     id: "arcade",
@@ -21,7 +21,7 @@ export const SERVICES = [
     features: ["Máquinas retro clásicas", "Juegos de destreza", "Pinball y flipper", "Juegos de disparos"],
     color: "from-pink-500 to-purple-600",
     glow: "pink",
-    image: "https://ninjakid.cl/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-02-at-6.17.07-PM-682x1024.jpeg",
+    image: "/images/arcade.jpeg",
   },
   {
     id: "sonido",
@@ -33,7 +33,7 @@ export const SERVICES = [
     features: ["Parlantes profesionales", "Luces LED sincronizadas", "Micrófono inalámbrico", "Playlist personalizada"],
     color: "from-cyan-400 to-blue-600",
     glow: "cyan",
-    image: "https://ninjakid.cl/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-02-at-6.18.09-PM-2-683x1024.jpeg",
+    image: "/images/sonido.jpeg",
   },
 ];
 
@@ -133,25 +133,25 @@ export const FAQS = [
 
 export const GALLERY_IMAGES = [
   {
-    src: "https://ninjakid.cl/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-17-at-10.19.01-PM-1-682x1024.jpeg",
+    src: "/images/inflable.jpeg",
     alt: "Inflable temático fiesta infantil",
     category: "inflables",
     span: "row-span-2",
   },
   {
-    src: "https://ninjakid.cl/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-02-at-6.17.07-PM-682x1024.jpeg",
+    src: "/images/arcade.jpeg",
     alt: "Máquina arcade retro",
     category: "arcade",
     span: "",
   },
   {
-    src: "https://ninjakid.cl/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-02-at-6.18.09-PM-2-683x1024.jpeg",
+    src: "/images/sonido.jpeg",
     alt: "Sistema de sonido profesional",
     category: "sonido",
     span: "",
   },
   {
-    src: "https://ninjakid.cl/wp-content/uploads/2026/03/image.jpg",
+    src: "/images/evento.jpg",
     alt: "Evento cumpleaños NinjaKid",
     category: "eventos",
     span: "col-span-2",

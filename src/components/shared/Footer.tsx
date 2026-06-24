@@ -43,7 +43,7 @@ export default function Footer() {
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", marginBottom: 16 }}>
               <div style={{ position: "relative", width: 40, height: 40, borderRadius: 11, overflow: "hidden", border: "1.5px solid rgba(255,202,0,0.25)", boxShadow: "0 0 14px rgba(255,202,0,0.1)", flexShrink: 0 }}>
                 <Image
-                  src="https://ninjakid.cl/wp-content/uploads/2026/03/ChatGPT-Image-22-ene-2026-14_54_24.png"
+                  src="/images/logo.png"
                   alt="NinjaKid" fill className="object-cover" unoptimized
                 />
               </div>
