@@ -109,7 +109,7 @@ function BookingFlow() {
           Roberto revisará tu solicitud y se contactará en menos de 24 horas para confirmar los detalles y el pago.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <a href="https://wa.me/56912345678" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ justifyContent: "center" }}>
+          <a href="https://wa.me/56958250256" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ justifyContent: "center" }}>
             Confirmar por WhatsApp
           </a>
           <Link href="/" className="btn btn-ghost" style={{ justifyContent: "center" }}>
